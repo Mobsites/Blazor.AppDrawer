@@ -1,87 +1,110 @@
 // Copyright (c) 2020 Allan Mobley. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-import {MDCDrawer} from "@material/drawer/index";
-import {MDCList} from "@material/list/index";
+import { MDCDrawer } from "@material/drawer/index";
+import { MDCList } from "@material/list/index";
 
-let modalEventsInitialized = false;
-let resizeEventInitialized = false;
+if (!window.Mobsites) {
+    window.Mobsites = {
+        Blazor: {
 
-window.AppDrawer = {
-    init: function (instance, modalOnly, breakpoint) {
-        window.AppDrawer.instance = instance;
-        // Initialize either modal or responsive drawer.
-        if (modalOnly) {
-            window.AppDrawer.self = initModalDrawer();
+        }
+    };
+}
+
+window.Mobsites.Blazor.AppDrawer = {
+    init: function (instance, options) {
+        window.Mobsites.Blazor.AppDrawer.instance = instance;
+        window.Mobsites.Blazor.AppDrawer.options = options;
+        if (options.modalOnly) {
+            this.initModalDrawer();
+        }
+        else if (window.matchMedia('(max-width: ' + options.responsiveBreakpoint + 'px)').matches) {
+            this.initModalDrawer();
+            this.initResizeEvent();
         }
         else {
-            // Toggle between permanent drawer and modal drawer at breakpoint 900px.
-            window.AppDrawer.self = window.matchMedia('(max-width: ' + breakpoint + 'px)').matches 
-                ? initModalDrawer() 
-                : initPermanentDrawer();
-            resizeEventInitialized = resizeEventInitialized || initResizeEvent();
+            this.initPermanentDrawer();
+            this.initResizeEvent();
         }
-        modalEventsInitialized = modalEventsInitialized || initModalEvents();
+    },
+    refresh: function (instance, options) {
+        if (options.teardown) {
+            window.Mobsites.Blazor.AppDrawer.initialized = false;
+        }
+        this.init(instance, options);
+    },
+    initModalDrawer: function () {
+        const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');
+        if (drawerButton) {
+            drawerButton.classList.remove('hide-mobsites-blazor-app-drawer-button');
+        }
+        const drawerElement = document.querySelector('.mdc-drawer');
+        if (drawerElement) {
+            drawerElement.classList.add('mdc-drawer--modal');
+        }
+        if (drawerElement && !window.Mobsites.Blazor.AppDrawer.initialized) {
+            if (window.Mobsites.Blazor.AppDrawer.self) {
+                window.Mobsites.Blazor.AppDrawer.self.destroy();
+            }
+            // Modal uses the MDCDrawer component, which will instantiate MDCList automatically.
+            const drawer = MDCDrawer.attachTo(drawerElement);
+            drawer.open = false;
+            window.Mobsites.Blazor.AppDrawer.initialized = true;
+            window.Mobsites.Blazor.AppDrawer.self = drawer;
+        }
+        this.initModalEvents();
+    },
+    initPermanentDrawer: function () {
+        const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');
+        if (drawerButton) {
+            drawerButton.classList.add('hide-mobsites-blazor-app-drawer-button');
+        }
+        const drawerElement = document.querySelector('.mdc-drawer');
+        if (drawerElement) {
+            drawerElement.classList.remove('mdc-drawer--modal');
+        }
+        const listElement = document.querySelector('.mdc-drawer .mdc-list, .mdc-drawer .mdc-drawer__content');
+        if (listElement && !window.Mobsites.Blazor.AppDrawer.initialized) {
+            if (window.Mobsites.Blazor.AppDrawer.self) {
+                window.Mobsites.Blazor.AppDrawer.self.destroy();
+            }
+            // For permanently visible drawers, the list must be instantiated for appropriate keyboard interaction.
+            const list = new MDCList(listElement);
+            list.wrapFocus = true;
+            window.Mobsites.Blazor.AppDrawer.initialized = true;
+            window.Mobsites.Blazor.AppDrawer.self = list;
+        }
+    },
+    initResizeEvent: function () {
+        window.addEventListener('resize', this.invokeNetRefresh);
+    },
+    initModalEvents: function () {
+        // Event for closing modal drawer when navigation or action occurs.
+        const listElement = document.querySelector('.mdc-drawer .mdc-list, .mdc-drawer .mdc-drawer__content');
+        if (listElement) {
+            listElement.addEventListener('click', this.closeDrawerClickEvent);
+        }
+        // Event for toggling modal drawer when .mobsites-blazor-app-drawer-button class is specified.
+        // As for Blazor Top App Bar, that component sets this event for the .mdc-top-app-bar__navigation-icon.
+        const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mobsites-blazor-app-drawer-button');
+        if (drawerButton) {
+            drawerButton.addEventListener('click', this.toggleDrawerClickEvent);
+        }
+    },
+    toggleDrawerClickEvent: function () {
+        console.log('Yep');
+        window.Mobsites.Blazor.AppDrawer.self.open = !window.Mobsites.Blazor.AppDrawer.self.open;
+    },
+    openDrawerClickEvent: function () {
+        window.Mobsites.Blazor.AppDrawer.self.open = true;
+    },
+    closeDrawerClickEvent: function () {
+        window.Mobsites.Blazor.AppDrawer.self.open = false;
+    },
+    invokeNetRefresh: function () {
+        clearTimeout(window.Mobsites.Blazor.AppDrawer.timeoutId);
+        // Delay the resize handling by 200ms
+        window.Mobsites.Blazor.AppDrawer.timeoutId = setTimeout(() => window.Mobsites.Blazor.AppDrawer.instance.invokeMethodAsync('Refresh', true), 200);
     }
-}
-
-const initModalDrawer = () => {
-    // Fetch drawer element.
-    const drawerElement = document.querySelector('.mdc-drawer');
-
-    // Add modal influence.
-    drawerElement.classList.add('mdc-drawer--modal');
-
-    // Show drawer button.
-    document.querySelector('.mdc-top-app-bar__navigation-icon, .app-drawer-button').classList.remove('hide-drawer-button');
-
-    // Modal uses the MDCDrawer component, which will instantiate MDCList automatically.
-    const drawer = MDCDrawer.attachTo(drawerElement);
-    drawer.open = false;
-
-    return drawer;
-}
-  
-const initPermanentDrawer = () => {
-    // Remove any modal influence.
-    document.querySelector('.mdc-drawer').classList.remove('mdc-drawer--modal');
-
-    // Hide drawer button.
-    document.querySelector('.mdc-top-app-bar__navigation-icon, .app-drawer-button').classList.add('hide-drawer-button');
-
-    // For permanently visible drawer, the list must be instantiated for appropriate keyboard interaction.
-    const list = new MDCList(document.querySelector('.mdc-drawer .mdc-list, .mdc-drawer .mdc-drawer__content'));
-    list.wrapFocus = true;
-
-    return list;
-}
-
-const initModalEvents = () => {
-    // Event for closing modal drawer when navigation occurs.
-    const listEl = document.querySelector('.mdc-drawer .mdc-list, .mdc-drawer .mdc-drawer__content');
-    listEl.addEventListener('click', (event) => {
-        window.AppDrawer.self.open = false;
-    });
-
-    // Event for toggling modal drawer when .app-drawer-button class is specified.
-    // Note: Blazor.MaterialDesign.Components.TopAppBar itself will initialize this event when employed.
-    var drawerButton = document.querySelector('.app-drawer-button');
-    if (drawerButton)
-    {
-        drawerButton.addEventListener('click', (event) => {
-            window.AppDrawer.self.open = !window.AppDrawer.self.open;
-        });
-    }
-
-    return true;
-}
-  
-const initResizeEvent = () => {
-    window.addEventListener('resize', resizeHandler);
-    return true;
-}
-  
-const resizeHandler = () => { 
-    window.AppDrawer.self.destroy();
-    window.AppDrawer.instance.invokeMethodAsync('Refresh');
 }

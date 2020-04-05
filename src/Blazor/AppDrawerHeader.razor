@@ -1,0 +1,21 @@
+<div class="mdc-drawer__header @Class" @attributes="@ExtraAttributes">
+    @if (ChildContent is null)
+    {
+        @if (UseImage)
+        {
+            <div class="mdc-drawer__image-container"><img src="@ImageSource" width="@ImageWidth" height="@ImageHeight" class="mdc-drawer__image" /></div>
+        }
+        @if (!string.IsNullOrWhiteSpace(Title))
+        {
+            <h3 class="mdc-drawer__title">@Title</h3>
+        }
+        @if (!string.IsNullOrWhiteSpace(Subtitle))
+        {
+            <h3 class="mdc-drawer__subtitle">@Subtitle</h3>
+        }
+    }
+    else
+    {
+        @ChildContent
+    }
+</div>

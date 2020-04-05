@@ -7,5 +7,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Blazor.AppDrawer.csproj" />
   </ItemGroup>
-  
+
 </Project>

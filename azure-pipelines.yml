@@ -13,28 +13,28 @@ steps:
 
 # Specify a particular version of the .NET SDK
 - task: UseDotNet@2
-  displayName: 'Use .NET Core sdk'
+  displayName: 'Set SDK'
   inputs:
     packageType: sdk
-    version: 3.1.200
+    version: 3.1.201
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
-# Build the solution. Not strictly required to create the package,
-# but we want the pipeline to fail if this step fails.
+# Build demo. Not strictly required to create the package,
+# but we want the pipeline to halt if this step fails.
 - script: dotnet build --configuration Release
-  workingDirectory: src
-  displayName: Build
+  workingDirectory: demo
+  displayName: Build Demo
 
 # Create the NuGet package file
 - script: dotnet pack --configuration Release
   workingDirectory: src
-  displayName: Pack
+  displayName: Pack Src
 
 # Upload the NuGet package file to nuget.org
 - task: NuGetCommand@2
-  displayName: Push
+  displayName: Push Src
   inputs:
     command: push
     packagesToPush: 'src/bin/Release/*.nupkg'
     nuGetFeedType: external
-    publishFeedCredentials: 'Blazor AppDrawer'
+    publishFeedCredentials: 'Blazor Packages'

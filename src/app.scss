@@ -15,38 +15,13 @@ app {
     flex-direction: column;
     width: 100%;
 }
-  
-.mdc-drawer-app-content {
-    flex: auto;
-    overflow: auto;
-    position: relative;
-}
 
-.main-content {
+.blazor-main-content {
     overflow: auto;
     height: 100%;
     padding-left: 2rem !important;
     padding-right: 1.5rem !important;
     padding-top: 4.5rem;
-}
-
-.app-bar {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
-    justify-content: flex-end;
-    padding-left: 1.5rem!important;
-    padding-right: 1.5rem!important;
-    z-index: 4;
-}
-
-.hide-drawer-button {
-    display: none;
 }
 
 .mdc-drawer {
@@ -99,18 +74,52 @@ app {
     color: white;
 }
 
-.mdc-drawer .mdc-drawer__title , .mdc-drawer .mdc-drawer__subtitle {
-    Color: white;
+.mdc-drawer .mdc-drawer__title , 
+.mdc-drawer .mdc-drawer__subtitle {
+    color: white;
+}
+
+.mdc-list-divider {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.mdc-drawer .mdc-list-group__subheader {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .mdc-drawer__image-container {
     text-align: center;
 }
 
+.mdc-drawer-app-content {
+    flex: auto;
+    overflow: auto;
+    position: relative;
+}
+
+.hide-mobsites-blazor-app-drawer-button {
+    display: none;
+}
+
 // only apply this style if below top app bar
 .drawer-below-app-bar {
     z-index: 7;
 }
+
+// .app-bar {
+//     position: absolute;
+//     top: 0;
+//     width: 100%;
+//     height: 64px;
+//     display: flex;
+//     align-items: center;
+//     background-color: var(--mdc-theme-primary, #052561);
+//     border-bottom: 1px solid #d6d5d5;
+//     justify-content: flex-end;
+//     padding-left: 1.5rem!important;
+//     padding-right: 1.5rem!important;
+//     z-index: 4;
+// }
 
 @media (min-width: 768px) {
     app {

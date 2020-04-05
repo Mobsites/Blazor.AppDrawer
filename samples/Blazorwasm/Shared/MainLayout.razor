@@ -1,8 +1,12 @@
 @inherits LayoutComponentBase
 
-<AppDrawer ModalOnly="true">
-    <AppDrawerHeader Title="Blazor AppDrawer" 
-                 Subtitle="Modal Only Mode" />
+@* <div class="sidebar">
+    <NavMenu />
+</div> *@
+
+<AppDrawer ModalOnly>
+    <AppDrawerHeader UseImage
+                     Title="Blazor App Drawer" />
     <AppDrawerContent>
         <nav class="nav flex-column">
             <div class="nav-item px-3">
@@ -23,14 +27,13 @@
         </nav>
     </AppDrawerContent>
 </AppDrawer>
-<AppContent ContainsAppBar="true">
-    <div class="app-bar">
-        <button class="app-drawer-button mr-auto" >
-            <span class="oi oi-menu"></span>
-        </button>
+
+<div class="main">
+    <div class="top-row px-4">
         <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
     </div>
-    <MainContent>
+
+    <div class="content px-4">
         @Body
-    </MainContent>
-</AppContent>
+    </div>
+</div>

@@ -5,18 +5,19 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <RootNamespace>Mobsites.Blazor.MaterialDesign</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Mobsites</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <Company>Mobsites</Company>
     <Authors>Allan Mobley</Authors>
     <Copyright>© 2020 Mobsites</Copyright>
-    <Description>Blazor component library that implements a subset of Google's MDC Navigation Drawer and is used to organize access to destinations and other functionality in a Blazor app.</Description>
-    <PackageId>Mobsites.Blazor.MaterialDesign.AppDrawer</PackageId>
+    <Description>A Blazor component that utilizes the MDC Drawer library to organize access to destinations and other functionality in a Blazor app.</Description>
+    <PackageId>Mobsites.Blazor.AppDrawer</PackageId>
     <IsPackable>true</IsPackable>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>mobsites-logo.png</PackageIcon>
-    <PackageReleaseNotes>Changed namespace to match package listing. Added image component. Added default blazor style and image.</PackageReleaseNotes>
-    <PackageVersion>1.0.0-preview2</PackageVersion>
+    <PackageReleaseNotes>Redesigned to follow Blazor.TopAppBar pattern. Breaking changes.</PackageReleaseNotes>
+    <PackageVersion>1.0.0-preview3</PackageVersion>
     <PackageTags>blazor;Google;material;design;drawer;component</PackageTags>
     <PackageProjectUrl>https://github.com/Mobsites/Blazor.AppDrawer</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>

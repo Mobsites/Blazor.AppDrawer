@@ -1,7 +1,7 @@
 [![Build Status](https://dev.azure.com/allanmobleyjr/Blazor%20AppDrawer/_apis/build/status/Publish%20to%20Nuget?branchName=master)](https://dev.azure.com/allanmobleyjr/Blazor%20AppDrawer/_build/latest?definitionId=5&branchName=master)
 
 # Blazor AppDrawer
-This component library implements a subset of Google's [MDC Navigation Drawer](https://material.io/develop/web/components/drawers/) and is used to organize access to destinations and other functionality in a Blazor app.
+A Blazor component that utilizes the [MDC Drawer](https://material.io/develop/web/components/drawers/) library to organize access to destinations and other functionality in a Blazor app.
 
 <image src="src/assets/modal-only-mode.png" alt="Image of Modal Only Mode" width="165" height="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<image src="src/assets/responsive-mode.png" alt="Image of Responsive Mode" width="650" height="" />
 
