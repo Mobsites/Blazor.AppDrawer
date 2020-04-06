@@ -24,6 +24,7 @@ app {
     display: flex;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
 }
 
 .main {
@@ -144,6 +145,10 @@ h2 {
     font-size: 1rem;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .no-outline:focus {
     outline: none;
 }
@@ -153,6 +158,45 @@ h2 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.mdc-drawer__content .oi {
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+}
+
+.mdc-drawer__content .nav-item {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+.mdc-drawer__content .nav-item:first-of-type {
+    padding-top: 1rem;
+}
+
+.mdc-drawer__content .nav-item:last-of-type {
+    padding-bottom: 1rem;
+}
+
+.mdc-drawer__content .nav-item a {
+    color: #d7d7d7;
+    border-radius: 4px;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    line-height: 3rem;
+}
+
+.mdc-drawer__content .nav-item a.active {
+    background-color: rgba(255,255,255,0.25);
+    color: white;
+}
+
+.mdc-drawer__content .nav-item a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
 }
 
 @media (max-width: 767.98px) {

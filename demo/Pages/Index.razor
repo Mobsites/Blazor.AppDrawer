@@ -5,11 +5,101 @@
 <br />
 <p>
     <b>
-        NOTE: This demonstrates the use of this component without a dependency on another MDC based component. 
-        We, of course, recommend using Blazor Top App Bar in conjunction with this component
-        as the two components work seamlessly together, not to mention less css adjustments.
+        NOTE: <small><i>This demonstrates the use of this component without a dependency on another MDC based component. 
+        We, of course, recommend using our other MDC based components in conjunction with this component
+        as they work seamlessly together, not to mention there are less css adjustments to incorporate.
+        But if you want to go solo, check out the demo's source code</i> <a target="_blank" href="https://github.com/Mobsites/Blazor.AppDrawer/tree/master/demo">here</a>.</small>
     </b>
 </p>
+<form>
+    <div class="row">
+        <div class="col col-sm-8 col-xl-4">
+            <div class="form-group">
+                <label for="app-drawer-variant">Select Variant</label>
+                <select class="form-control pointer" 
+                        id="app-drawer-variant" 
+                        @oninput="@((e) => MainLayout.ModalOnly = (bool)(bool.Parse(e.Value as string)))">
+                    <option value="false" selected=@(!MainLayout.ModalOnly)>Responsive</option>
+                    <option value="true" selected=@MainLayout.ModalOnly>Modal Only</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-sm-8 col-xl-4">
+            <b>Header:</b>
+            <div class="pt-2 pl-4">
+                <div class="form-group form-check">
+                    <input checked=@MainLayout.HasHeader 
+                            type="checkbox" 
+                            class="form-check-input pointer" 
+                            id="has-header" 
+                            @onchange="@((e) => MainLayout.HasHeader = (bool)(e.Value as bool?))" />
+                    <label class="form-check-label pointer" for="has-header">Yes</label>
+                </div>
+                <div class="form-group form-check">
+                    <input checked=@MainLayout.ScrollableHeader 
+                            type="checkbox" 
+                            class="form-check-input pointer" 
+                            id="scrollable-header" 
+                            @onchange="@((e) => MainLayout.ScrollableHeader = (bool)(e.Value as bool?))" />
+                    <label class="form-check-label pointer" for="scrollable-header">Scrollable</label>
+                </div>
+                <div class="form-group form-check">
+                    <input checked=@MainLayout.UseHeaderImage 
+                            type="checkbox" 
+                            class="form-check-input pointer" 
+                            id="has-image" 
+                            @onchange="@((e) => MainLayout.UseHeaderImage = (bool)(e.Value as bool?))" />
+                    <label class="form-check-label pointer" for="has-image">Use Brand Image</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col col-sm-8 col-xl-4">
+            <b>Background Color Image:</b>
+            <div class="pt-2 pl-4">
+                <div class="form-group">
+                    <label for="top-app-bar-type">Direction</label>
+                    <select class="form-control" 
+                        id="top-app-bar-type" 
+                        @oninput="@((e) => MainLayout.BackgroundImageColorDirection = Enum.Parse<AppDrawer.BackgroundImageColorDirections>(e.Value as string))">
+                        <option value="@AppDrawer.BackgroundImageColorDirections.TopToBottom" selected=@(MainLayout.BackgroundImageColorDirection == AppDrawer.BackgroundImageColorDirections.TopToBottom ? true : false)>Top To Bottom</option>
+                        <option value="@AppDrawer.BackgroundImageColorDirections.BottomToTop" selected=@(MainLayout.BackgroundImageColorDirection == AppDrawer.BackgroundImageColorDirections.BottomToTop ? true : false)>Bottom To Top</option>
+                        <option value="@AppDrawer.BackgroundImageColorDirections.LeftToRight" selected=@(MainLayout.BackgroundImageColorDirection == AppDrawer.BackgroundImageColorDirections.LeftToRight ? true : false)>Left To Right</option>
+                        <option value="@AppDrawer.BackgroundImageColorDirections.RightToLeft" selected=@(MainLayout.BackgroundImageColorDirection == AppDrawer.BackgroundImageColorDirections.RightToLeft ? true : false)>Right To Left</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-sm-8 col-xl-4">
+            <div class="form-group pl-4">
+                <label for="start-color">Start Color (name, rgb, or hex)</label>
+                <input class="form-control" 
+                    id="start-color" 
+                    type="text" 
+                    value="@MainLayout.BackgroundImageStartColor" 
+                    @onchange="@((e) => MainLayout.BackgroundImageStartColor = e.Value as string)"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-sm-8 col-xl-4">
+            <div class="form-group pl-4">
+                <label for="end-color">End Color (name, rgb, or hex)</label>
+                <input class="form-control" 
+                    id="end-color" 
+                    type="text" 
+                    value="@MainLayout.BackgroundImageEndColor" 
+                    @onchange="@((e) => MainLayout.BackgroundImageEndColor = e.Value as string)"/>
+            </div>
+        </div>
+    </div>
+</form>
+<br />
 <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit,
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -172,3 +262,7 @@
     occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
     anim id est laborum.
 </p>
+
+@code {
+    [CascadingParameter] public MainLayout MainLayout { get; set; }
+}

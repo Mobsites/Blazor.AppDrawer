@@ -29,6 +29,9 @@ window.Mobsites.Blazor.AppDrawer = {
         }
     },
     refresh: function (instance, options) {
+        if (options.modalOnly != window.Mobsites.Blazor.AppDrawer.options.modalOnly) {
+            options.destroy = true;
+        }
         this.init(instance, options);
     },
     initModalDrawer: function () {

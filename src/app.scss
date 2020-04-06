@@ -16,55 +16,18 @@ app {
     width: 100%;
 }
 
+.mdc-drawer-app-content {
+    flex: auto;
+    overflow: auto;
+    position: relative;
+}
+
 .blazor-main-content {
     overflow: auto;
     height: 100%;
     padding-left: 2rem !important;
     padding-right: 1.5rem !important;
     padding-top: 4.5rem;
-}
-
-.mdc-drawer {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-}
-
-.mdc-drawer__content .oi {
-    width: 2rem;
-    font-size: 1.1rem;
-    vertical-align: text-top;
-    top: -2px;
-}
-
-.mdc-drawer__content .nav-item {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
-}
-
-.mdc-drawer__content .nav-item:first-of-type {
-    padding-top: 1rem;
-}
-
-.mdc-drawer__content .nav-item:last-of-type {
-    padding-bottom: 1rem;
-}
-
-.mdc-drawer__content .nav-item a {
-    color: #d7d7d7;
-    border-radius: 4px;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    line-height: 3rem;
-}
-
-.mdc-drawer__content .nav-item a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
-}
-
-.mdc-drawer__content .nav-item a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
 }
 
 .mdc-drawer__header {
@@ -91,12 +54,6 @@ app {
     text-align: center;
 }
 
-.mdc-drawer-app-content {
-    flex: auto;
-    overflow: auto;
-    position: relative;
-}
-
 .hide-mobsites-blazor-app-drawer-button {
     display: none;
 }
@@ -105,21 +62,6 @@ app {
 .drawer-below-app-bar {
     z-index: 7;
 }
-
-// .app-bar {
-//     position: absolute;
-//     top: 0;
-//     width: 100%;
-//     height: 64px;
-//     display: flex;
-//     align-items: center;
-//     background-color: var(--mdc-theme-primary, #052561);
-//     border-bottom: 1px solid #d6d5d5;
-//     justify-content: flex-end;
-//     padding-left: 1.5rem!important;
-//     padding-right: 1.5rem!important;
-//     z-index: 4;
-// }
 
 @media (min-width: 768px) {
     app {

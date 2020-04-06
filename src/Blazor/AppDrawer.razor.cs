@@ -50,27 +50,92 @@ namespace Mobsites.Blazor
         [Parameter] public string Class { get; set; }
 
         /// <summary>
+        /// Styles for affecting this component go here.
+        /// </summary>
+        [Parameter] public string Style { get; set; }
+
+        /// <summary>
         /// Set this to true to have a modal dismissable drawer across all device sizes. 
         /// Defaults to a responsive mode (false). 
         /// </summary>
         [Parameter] public bool ModalOnly { get; set; }
 
+        private int? responsiveBreakpoint = 900;
+
         /// <summary>
         /// The css media breakpoint (in pixels) at which the drawer goes from modal to fixed in responsive mode.
         /// The default is 900px, which also the minmum allowed.
         /// </summary>
-        [Parameter] public int ResponsiveBreakpoint { get; set; }
+        [Parameter] public int? ResponsiveBreakpoint
+        { 
+            get => responsiveBreakpoint; 
+            set 
+            { 
+                if (value != null && value > 900)
+                {
+                    responsiveBreakpoint = value;
+                } 
+            } 
+        }
+        
+        /// <summary>
+        /// Whether to not use a background color image. 
+        /// </summary>
+        [Parameter] public bool NoBackgroundColorImage { get; set; }
 
-        // Minimum breakpoint allowed.
-        private const int responsiveBreakpoint = 900;
+        /// <summary>
+        /// The direction of color flow. Defaults to BackgroundImageColorDirections.TopToBottom.
+        /// </summary>
+        [Parameter] public BackgroundImageColorDirections BackgroundImageColorDirection { get; set; } = BackgroundImageColorDirections.TopToBottom;
+
+        private string backgroundImageStartColor = "#052767";
+
+        /// <summary>
+        /// Any valid css color usage (rgb, hex, or color name). Defaults to #052767.
+        /// </summary>
+        [Parameter] public string BackgroundImageStartColor
+        { 
+            get => backgroundImageStartColor; 
+            set 
+            { 
+                if (!string.IsNullOrEmpty(value))
+                {
+                    backgroundImageStartColor = value;
+                } 
+            } 
+        }
+        
+        private string backgroundImageEndColor = "#3a0647";
+
+        /// <summary>
+        /// Any valid css color usage (rgb, hex, or color name). Defaults to #3a0647.
+        /// </summary>
+        [Parameter] public string BackgroundImageEndColor
+        { 
+            get => backgroundImageEndColor; 
+            set 
+            { 
+                if (!string.IsNullOrEmpty(value))
+                {
+                    backgroundImageEndColor = value;
+                } 
+            } 
+        }
+
+        public enum BackgroundImageColorDirections
+        {
+            BottomToTop = 0,
+            LeftToRight = 90,
+            TopToBottom = 180,
+            RightToLeft = 270
+            
+        }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             var options = new {
                 ModalOnly,
-                ResponsiveBreakpoint = ResponsiveBreakpoint > 900
-                    ? ResponsiveBreakpoint
-                    : responsiveBreakpoint,
+                ResponsiveBreakpoint,
                 Destroy = true
             };
 
@@ -100,9 +165,7 @@ namespace Mobsites.Blazor
         {
             var options = new {
                 ModalOnly,
-                ResponsiveBreakpoint = ResponsiveBreakpoint > 900
-                    ? ResponsiveBreakpoint
-                    : responsiveBreakpoint,
+                ResponsiveBreakpoint,
                 Destroy = destroy
             };
 
