@@ -70,7 +70,8 @@ namespace Mobsites.Blazor
                 ModalOnly,
                 ResponsiveBreakpoint = ResponsiveBreakpoint > 900
                     ? ResponsiveBreakpoint
-                    : responsiveBreakpoint
+                    : responsiveBreakpoint,
+                Destroy = true
             };
 
             if (self is null)
@@ -87,7 +88,7 @@ namespace Mobsites.Blazor
             }
             else
             {
-                await Refresh(teardown: false);
+                await Refresh(destroy: false);
             }
         }
 
@@ -95,14 +96,14 @@ namespace Mobsites.Blazor
         /// Refreshes the drawer when in responsive mode.
         /// </summary>
         [JSInvokable]
-        public async Task Refresh(bool teardown)
+        public async Task Refresh(bool destroy)
         {
             var options = new {
                 ModalOnly,
                 ResponsiveBreakpoint = ResponsiveBreakpoint > 900
                     ? ResponsiveBreakpoint
                     : responsiveBreakpoint,
-                Teardown = teardown
+                Destroy = destroy
             };
 
             await jsRuntime.InvokeVoidAsync(

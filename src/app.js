@@ -29,9 +29,6 @@ window.Mobsites.Blazor.AppDrawer = {
         }
     },
     refresh: function (instance, options) {
-        if (options.teardown) {
-            window.Mobsites.Blazor.AppDrawer.initialized = false;
-        }
         this.init(instance, options);
     },
     initModalDrawer: function () {
@@ -43,7 +40,7 @@ window.Mobsites.Blazor.AppDrawer = {
         if (drawerElement) {
             drawerElement.classList.add('mdc-drawer--modal');
         }
-        if (drawerElement && !window.Mobsites.Blazor.AppDrawer.initialized) {
+        if (drawerElement && (!window.Mobsites.Blazor.AppDrawer.initialized || window.Mobsites.Blazor.AppDrawer.options.destroy)) {
             if (window.Mobsites.Blazor.AppDrawer.self) {
                 window.Mobsites.Blazor.AppDrawer.self.destroy();
             }
@@ -65,7 +62,7 @@ window.Mobsites.Blazor.AppDrawer = {
             drawerElement.classList.remove('mdc-drawer--modal');
         }
         const listElement = document.querySelector('.mdc-drawer .mdc-list, .mdc-drawer .mdc-drawer__content');
-        if (listElement && !window.Mobsites.Blazor.AppDrawer.initialized) {
+        if (listElement && (!window.Mobsites.Blazor.AppDrawer.initialized || window.Mobsites.Blazor.AppDrawer.options.destroy)) {
             if (window.Mobsites.Blazor.AppDrawer.self) {
                 window.Mobsites.Blazor.AppDrawer.self.destroy();
             }
@@ -93,7 +90,6 @@ window.Mobsites.Blazor.AppDrawer = {
         }
     },
     toggleDrawerClickEvent: function () {
-        console.log('Yep');
         window.Mobsites.Blazor.AppDrawer.self.open = !window.Mobsites.Blazor.AppDrawer.self.open;
     },
     openDrawerClickEvent: function () {
@@ -103,6 +99,7 @@ window.Mobsites.Blazor.AppDrawer = {
         window.Mobsites.Blazor.AppDrawer.self.open = false;
     },
     invokeNetRefresh: function () {
+        // Prevent window.resize event from firing .Net invokeMethodAsync('Refresh', true) more than once.
         clearTimeout(window.Mobsites.Blazor.AppDrawer.timeoutId);
         // Delay the resize handling by 200ms
         window.Mobsites.Blazor.AppDrawer.timeoutId = setTimeout(() => window.Mobsites.Blazor.AppDrawer.instance.invokeMethodAsync('Refresh', true), 200);
