@@ -16,7 +16,7 @@
     <IsPackable>true</IsPackable>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>mobsites-logo.png</PackageIcon>
-    <PackageReleaseNotes>Redesigned to follow Blazor.TopAppBar pattern. Breaking changes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Redesigned to follow new dev pattern. Breaking changes.</PackageReleaseNotes>
     <PackageVersion>1.0.0-preview3</PackageVersion>
     <PackageTags>blazor;Google;material;design;drawer;component</PackageTags>
     <PackageProjectUrl>https://mobsites.github.io/Blazor.AppDrawer</PackageProjectUrl>
