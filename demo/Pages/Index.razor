@@ -8,7 +8,8 @@
         NOTE: <small><i>This demonstrates the use of this component without a dependency on another MDC based component. 
         We, of course, recommend using our other MDC based components in conjunction with this component
         as they work seamlessly together, not to mention there are less css adjustments to incorporate.
-        But if you want to go solo, check out the demo's source code</i> <a target="_blank" href="https://github.com/Mobsites/Blazor.AppDrawer/tree/master/demo">here</a>.</small>
+        But if you want to go solo, check out the demo's source code</i> <a target="_blank" href="https://github.com/Mobsites/Blazor.AppDrawer/tree/master/demo">here</a>
+        for one approach.</small>
     </b>
 </p>
 <form>
@@ -22,6 +23,18 @@
                     <option value="false" selected=@(!MainLayout.ModalOnly)>Responsive</option>
                     <option value="true" selected=@MainLayout.ModalOnly>Modal Only</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="responsive-breakpoint">Responsive Breakpoint</label>
+                <input class="form-control" 
+                    id="responsive-breakpoint" 
+                    type="number" 
+                    min="0"
+                    step="1"
+                    title="whole numbers only"
+                    value="@MainLayout.ResponsiveBreakpoint" 
+                    oninput="validity.valid||(value='');"
+                    @onchange="@((e) => MainLayout.ResponsiveBreakpoint = int.Parse(e.Value as string))"/>
             </div>
         </div>
     </div>
@@ -46,11 +59,11 @@
                     <label class="form-check-label pointer" for="scrollable-header">Scrollable</label>
                 </div>
                 <div class="form-group form-check">
-                    <input checked=@MainLayout.UseHeaderImage 
+                    <input checked=@MainLayout.UseImage 
                             type="checkbox" 
                             class="form-check-input pointer" 
                             id="has-image" 
-                            @onchange="@((e) => MainLayout.UseHeaderImage = (bool)(e.Value as bool?))" />
+                            @onchange="@((e) => MainLayout.UseImage = (bool)(e.Value as bool?))" />
                     <label class="form-check-label pointer" for="has-image">Use Brand Image</label>
                 </div>
             </div>
@@ -58,17 +71,51 @@
     </div>
     <div class="row mt-2">
         <div class="col col-sm-8 col-xl-4">
-            <b>Background Color Image:</b>
+            <b>Background:</b>
             <div class="pt-2 pl-4">
+                <div class="form-group form-check">
+                    <input 
+                        checked=@(MainLayout.BackgroundMode == BackgroundModes.Dark)
+                        type="radio" class="form-check-input" 
+                        id="dark-mode" 
+                        @onchange="@((e) => MainLayout.BackgroundMode = BackgroundModes.Dark)" />
+                    <label class="form-check-label" for="dark-mode">Dark Mode</label>
+                </div>
+                <div class="form-group form-check">
+                    <input 
+                        checked=@(MainLayout.BackgroundMode == BackgroundModes.Light)
+                        type="radio" class="form-check-input" 
+                        id="light-mode" 
+                        @onchange="@((e) => MainLayout.BackgroundMode = BackgroundModes.Light)" />
+                    <label class="form-check-label" for="light-mode">Light Mode</label>
+                </div>
+                <div class="form-group form-check">
+                    <input 
+                        checked=@(MainLayout.BackgroundMode == BackgroundModes.Image) 
+                        type="radio" 
+                        class="form-check-input" 
+                        id="use-background-image" 
+                        @onchange="@((e) => MainLayout.BackgroundMode = BackgroundModes.Image)" />
+                    <label class="form-check-label" for="use-background-image">Use Background Image</label>
+                </div>
+                <div class="form-group form-check">
+                    <input 
+                        checked=@(MainLayout.BackgroundMode == BackgroundModes.Gradient)
+                        type="radio" 
+                        class="form-check-input" 
+                        id="use-background-color" 
+                        @onchange="@((e) => MainLayout.BackgroundMode = BackgroundModes.Gradient)" />
+                    <label class="form-check-label" for="use-background-color">Use Background Color</label>
+                </div>
                 <div class="form-group">
                     <label for="top-app-bar-type">Direction</label>
                     <select class="form-control" 
                         id="top-app-bar-type" 
-                        @oninput="@((e) => MainLayout.BackgroundImageColorDirection = Enum.Parse<AppDrawer.BackgroundImageColorDirections>(e.Value as string))">
-                        <option value="@AppDrawer.BackgroundImageColorDirections.TopToBottom" selected=@(MainLayout.BackgroundImageColorDirection == AppDrawer.BackgroundImageColorDirections.TopToBottom ? true : false)>Top To Bottom</option>
-                        <option value="@AppDrawer.BackgroundImageColorDirections.BottomToTop" selected=@(MainLayout.BackgroundImageColorDirection == AppDrawer.BackgroundImageColorDirections.BottomToTop ? true : false)>Bottom To Top</option>
-                        <option value="@AppDrawer.BackgroundImageColorDirections.LeftToRight" selected=@(MainLayout.BackgroundImageColorDirection == AppDrawer.BackgroundImageColorDirections.LeftToRight ? true : false)>Left To Right</option>
-                        <option value="@AppDrawer.BackgroundImageColorDirections.RightToLeft" selected=@(MainLayout.BackgroundImageColorDirection == AppDrawer.BackgroundImageColorDirections.RightToLeft ? true : false)>Right To Left</option>
+                        @oninput="@((e) => MainLayout.BackgroundColorDirection = Enum.Parse<BackgroundColorDirections>(e.Value as string))">
+                        <option value="@BackgroundColorDirections.TopToBottom" selected=@(MainLayout.BackgroundColorDirection == BackgroundColorDirections.TopToBottom ? true : false)>Top To Bottom</option>
+                        <option value="@BackgroundColorDirections.BottomToTop" selected=@(MainLayout.BackgroundColorDirection == BackgroundColorDirections.BottomToTop ? true : false)>Bottom To Top</option>
+                        <option value="@BackgroundColorDirections.LeftToRight" selected=@(MainLayout.BackgroundColorDirection == BackgroundColorDirections.LeftToRight ? true : false)>Left To Right</option>
+                        <option value="@BackgroundColorDirections.RightToLeft" selected=@(MainLayout.BackgroundColorDirection == BackgroundColorDirections.RightToLeft ? true : false)>Right To Left</option>
                     </select>
                 </div>
             </div>
@@ -81,8 +128,8 @@
                 <input class="form-control" 
                     id="start-color" 
                     type="text" 
-                    value="@MainLayout.BackgroundImageStartColor" 
-                    @onchange="@((e) => MainLayout.BackgroundImageStartColor = e.Value as string)"/>
+                    value="@MainLayout.BackgroundColorStart" 
+                    @onchange="@((e) => MainLayout.BackgroundColorStart = e.Value as string)"/>
             </div>
         </div>
     </div>
@@ -93,8 +140,21 @@
                 <input class="form-control" 
                     id="end-color" 
                     type="text" 
-                    value="@MainLayout.BackgroundImageEndColor" 
-                    @onchange="@((e) => MainLayout.BackgroundImageEndColor = e.Value as string)"/>
+                    value="@MainLayout.BackgroundColorEnd" 
+                    @onchange="@((e) => MainLayout.BackgroundColorEnd = e.Value as string)"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-sm-8 col-xl-4">
+            <div class="form-group pl-4">
+                <label for="end-color">Text Color (name, rgb, or hex)</label>
+                <input 
+                    class="form-control" 
+                    id="end-color" 
+                    type="text" 
+                    value="@MainLayout.Color" 
+                    @onchange="@((e) => MainLayout.Color = e.Value as string)"/>
             </div>
         </div>
     </div>

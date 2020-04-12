@@ -1,1 +1,3 @@
-<h6 class="mdc-list-group__subheader @Class" @attributes="@ExtraAttributes">@ChildContent</h6>
+@inherits ChildComponent<AppDrawerContent>
+
+<h6 class="mdc-list-group__subheader @Class" style="color:@Parent.Color; @Style" @attributes="@ExtraAttributes">@ChildContent</h6>

@@ -27,12 +27,13 @@ window.Mobsites.Blazor.AppDrawer = {
             this.initPermanentDrawer();
             this.initResizeEvent();
         }
+        return true;
     },
     refresh: function (instance, options) {
         if (options.modalOnly != window.Mobsites.Blazor.AppDrawer.options.modalOnly) {
             options.destroy = true;
         }
-        this.init(instance, options);
+        return this.init(instance, options);
     },
     initModalDrawer: function () {
         const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');

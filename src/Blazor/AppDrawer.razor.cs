@@ -4,7 +4,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Mobsites.Blazor
@@ -15,7 +14,21 @@ namespace Mobsites.Blazor
     public partial class AppDrawer : IDisposable
     {
         private DotNetObjectReference<AppDrawer> self;
-        [Inject] protected IJSRuntime jsRuntime { get; set; }
+
+        /// <summary>
+        /// Whether the component has been completely initialized, including its JavaScript representation.
+        /// </summary>
+        private bool initialized;
+
+        /// <summary>
+        /// Child reference. (Assigned by child.)
+        /// </summary>
+        internal AppDrawerHeader AppDrawerHeader { get; set; }
+
+        /// <summary>
+        /// Child reference. (Assigned by child.)
+        /// </summary>
+        internal AppDrawerContent AppDrawerContent { get; set; }
 
         /// <summary>
         /// Use this css class marker on a div wrapper around main content when using the <see cref="AppDrawer"/> component.
@@ -35,30 +48,15 @@ namespace Mobsites.Blazor
         public static string AppDrawerButtonMarker => "mobsites-blazor-app-drawer-button";
 
         /// <summary>
-        /// All html attributes outside of the class attribute go here. Use the Class attribute property to add css classes.
-        /// </summary>
-        [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> ExtraAttributes { get; set; } 
-
-        /// <summary>
-        /// The <see cref="AppDrawerHeader"/> (optional) and the <see cref="AppDrawerContent"/> (required).
-        /// </summary>
-        [Parameter] public RenderFragment ChildContent { get; set; }
-
-        /// <summary>
-        /// Css classes for affecting this component go here.
-        /// </summary>
-        [Parameter] public string Class { get; set; }
-
-        /// <summary>
-        /// Styles for affecting this component go here.
-        /// </summary>
-        [Parameter] public string Style { get; set; }
-
-        /// <summary>
         /// Set this to true to have a modal dismissable drawer across all device sizes. 
         /// Defaults to a responsive mode (false). 
         /// </summary>
         [Parameter] public bool ModalOnly { get; set; }
+
+        /// <summary>
+        /// Call back event for notifying another component that this property changed. 
+        /// </summary>
+        [Parameter] public EventCallback<bool> ModalOnlyChanged { get; set; }
 
         private int? responsiveBreakpoint = 900;
 
@@ -70,75 +68,25 @@ namespace Mobsites.Blazor
         { 
             get => responsiveBreakpoint; 
             set 
-            { 
-                if (value != null && value > 900)
+            {   
+                if (value is null)
+                {
+                    responsiveBreakpoint = 900;
+                }
+                else if (value >= 0)
                 {
                     responsiveBreakpoint = value;
                 } 
             } 
         }
-        
-        /// <summary>
-        /// Whether to not use a background color image. 
-        /// </summary>
-        [Parameter] public bool NoBackgroundColorImage { get; set; }
 
         /// <summary>
-        /// The direction of color flow. Defaults to BackgroundImageColorDirections.TopToBottom.
+        /// Call back event for notifying another component that this property changed. 
         /// </summary>
-        [Parameter] public BackgroundImageColorDirections BackgroundImageColorDirection { get; set; } = BackgroundImageColorDirections.TopToBottom;
-
-        private string backgroundImageStartColor = "#052767";
-
-        /// <summary>
-        /// Any valid css color usage (rgb, hex, or color name). Defaults to #052767.
-        /// </summary>
-        [Parameter] public string BackgroundImageStartColor
-        { 
-            get => backgroundImageStartColor; 
-            set 
-            { 
-                if (!string.IsNullOrEmpty(value))
-                {
-                    backgroundImageStartColor = value;
-                } 
-            } 
-        }
-        
-        private string backgroundImageEndColor = "#3a0647";
-
-        /// <summary>
-        /// Any valid css color usage (rgb, hex, or color name). Defaults to #3a0647.
-        /// </summary>
-        [Parameter] public string BackgroundImageEndColor
-        { 
-            get => backgroundImageEndColor; 
-            set 
-            { 
-                if (!string.IsNullOrEmpty(value))
-                {
-                    backgroundImageEndColor = value;
-                } 
-            } 
-        }
-
-        public enum BackgroundImageColorDirections
-        {
-            BottomToTop = 0,
-            LeftToRight = 90,
-            TopToBottom = 180,
-            RightToLeft = 270
-            
-        }
+        [Parameter] public EventCallback<int?> ResponsiveBreakpointChanged { get; set; }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
-            var options = new {
-                ModalOnly,
-                ResponsiveBreakpoint,
-                Destroy = true
-            };
-
             if (self is null)
             {
                  self = DotNetObjectReference.Create(this);
@@ -146,38 +94,129 @@ namespace Mobsites.Blazor
 
             if (firstRender)
             {
-                await jsRuntime.InvokeVoidAsync(
-                    "Mobsites.Blazor.AppDrawer.init",
-                    self,
-                    options);
+                await Initialize();
             }
             else
             {
-                await Refresh(destroy: false);
+                await Refresh();
             }
         }
+
+        private async Task Initialize()
+        {
+            var options = this.KeepState 
+                ? this.UseSessionStorageForState
+                    ? await this.Storage.Session.GetAsync<Options>(nameof(AppDrawer))
+                    : await this.Storage.Local.GetAsync<Options>(nameof(AppDrawer))
+                : null;
+
+            if (options is null)
+            {
+                options = this.SetOptions();
+            }
+            else
+            {
+                await this.CheckState(options);
+            }
+
+            // Destroy any lingering js representation.
+            options.Destroy = true;
+            
+            this.initialized = await this.jsRuntime.InvokeAsync<bool>(
+                "Mobsites.Blazor.AppDrawer.init",
+                self,
+                options);
+
+            await Save(options);
+        }
+
 
         /// <summary>
         /// Refreshes the drawer when in responsive mode.
         /// </summary>
         [JSInvokable]
-        public async Task Refresh(bool destroy)
+        public async Task Refresh(bool destroy = false)
         {
-            var options = new {
-                ModalOnly,
-                ResponsiveBreakpoint,
-                Destroy = destroy
-            };
+            var options = this.KeepState 
+                ? this.UseSessionStorageForState
+                    ? await this.Storage.Session.GetAsync<Options>(nameof(AppDrawer))
+                    : await this.Storage.Local.GetAsync<Options>(nameof(AppDrawer))
+                : null;
 
-            await jsRuntime.InvokeVoidAsync(
+            // Use current state if...
+            if (this.initialized || options is null)
+            {
+                options = this.SetOptions();
+            }
+
+            options.Destroy = destroy;
+
+            this.initialized = await this.jsRuntime.InvokeAsync<bool>(
                 "Mobsites.Blazor.AppDrawer.refresh",
                 self,
                 options);
+            
+            await Save(options);
+        }
+
+        internal Options SetOptions()
+        {
+            var options = new Options 
+            {
+                ModalOnly = this.ModalOnly,
+                ResponsiveBreakpoint = this.ResponsiveBreakpoint
+            };
+
+            base.SetOptions(options);
+            this.AppDrawerHeader?.SetOptions(options);
+            // this.AppDrawerContent?.SetOptions(options);
+
+            return options;
+        }
+
+        internal async Task CheckState(Options options)
+        {
+            if (this.ModalOnly != options.ModalOnly)
+            {
+                await this.ModalOnlyChanged.InvokeAsync(options.ModalOnly);
+            }
+            if (this.ResponsiveBreakpoint != options.ResponsiveBreakpoint)
+            {
+                await this.ResponsiveBreakpointChanged.InvokeAsync(options.ResponsiveBreakpoint);
+            }
+
+            await base.CheckState(options);
+            await this.AppDrawerHeader?.CheckState(options);
+            // await this.AppDrawerContent?.CheckState(options);
+        }
+
+        private async Task Save(Options options)
+        {
+            // Clear destory before saving.
+            options.Destroy = false;
+
+            if (this.KeepState)
+            {
+                if (this.UseSessionStorageForState)
+                {
+                    await this.Storage.Session.SetAsync(nameof(AppDrawer), options);
+                }
+                else
+                {
+                    await this.Storage.Local.SetAsync(nameof(AppDrawer), options);
+                }
+            }
+            else
+            {
+                await this.Storage.Session.RemoveAsync<Options>(nameof(AppDrawer));
+                await this.Storage.Local.RemoveAsync<Options>(nameof(AppDrawer));
+            }
         }
 
         public void Dispose()
         {
             self?.Dispose();
+            this.initialized = false;
         }
     }
 }

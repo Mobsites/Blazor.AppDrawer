@@ -1,10 +1,8 @@
 // Copyright (c) 2020 Allan Mobley. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-
 
 namespace Mobsites.Blazor
 {
@@ -16,29 +14,19 @@ namespace Mobsites.Blazor
     public partial class AppDrawerHeader
     {
         /// <summary>
-        /// Parent container.
-        /// </summary>
-        [CascadingParameter] internal AppDrawer Parent { get; set; }
-
-        /// <summary>
-        /// All html attributes outside of the class attribute go here. Use the Class attribute property to add css classes.
-        /// </summary>
-        [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object> ExtraAttributes { get; set; }
-
-        /// <summary>
-        /// The header content.
+        /// Content to render.
         /// </summary>
         [Parameter] public RenderFragment ChildContent { get; set; }
-
-        /// <summary>
-        /// Css classes for affecting this child component go here.
-        /// </summary>
-        [Parameter] public string Class { get; set; }
-
+        
         /// <summary>
         /// Title content. Will be ignored if this component also has child content.
         /// </summary>
         [Parameter] public string Title { get; set; }
+
+        /// <summary>
+        /// Call back event for notifying another component that this property changed. 
+        /// </summary>
+        [Parameter] public EventCallback<string> TitleChanged { get; set; }
 
         /// <summary>
         /// Subtitle content. Will be ignored if this component also has child content.
@@ -46,23 +34,33 @@ namespace Mobsites.Blazor
         [Parameter] public string Subtitle { get; set; }
 
         /// <summary>
-        /// Whether to show a brand image.
+        /// Call back event for notifying another component that this property changed. 
+        /// </summary>
+        [Parameter] public EventCallback<string> SubtitleChanged { get; set; }
+
+        /// <summary>
+        /// Whether to use image.
         /// </summary>
         [Parameter] public bool UseImage { get; set; }
 
-        private string imageSource = "_content/Mobsites.Blazor.AppDrawer/blazor.png";
+        /// <summary>
+        /// Call back event for notifying another component that this property changed. 
+        /// </summary>
+        [Parameter] public EventCallback<bool> UseImageChanged { get; set; }
+
+        private string image;
         
         /// <summary>
-        /// Image source override. Defaults to '_content/Mobsites.Blazor.AppDrawer/blazor.png'.
+        /// Image source.
         /// </summary>
-        [Parameter] public string ImageSource 
+        [Parameter] public string Image 
         { 
-            get => imageSource; 
+            get => image; 
             set 
             { 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    imageSource = value;
+                    image = value;
                 } 
             } 
         }
@@ -70,7 +68,7 @@ namespace Mobsites.Blazor
         private int imageWidth = 192;
         
         /// <summary>
-        /// Image width (px) override. Defaults to 192px.
+        /// Image width. Defaults to 192px.
         /// </summary>
         [Parameter] public int ImageWidth 
         { 
@@ -87,7 +85,7 @@ namespace Mobsites.Blazor
         private int imageHeight = 192;
         
         /// <summary>
-        /// Image height (px) override. Defaults to 192px.
+        /// Image height. Defaults to 192px.
         /// </summary>
         [Parameter] public int ImageHeight 
         { 
@@ -101,11 +99,37 @@ namespace Mobsites.Blazor
             } 
         }
 
+        internal string Color => Parent.Color;
+
         protected override void OnParametersSet()
         {
-            if (Parent is null)
+            // This will check for valid parent.
+            base.OnParametersSet();
+            base.Parent.AppDrawerHeader = this;
+        }
+
+        internal void SetOptions(AppDrawer.Options options)
+        {
+            options.Title = this.Title;
+            options.Subtitle = this.Subtitle;
+            options.UseImage = this.UseImage;
+        }
+
+        internal async Task CheckState(AppDrawer.Options options)
+        {
+            if (this.Title != options.Title)
             {
-                throw new ArgumentNullException(nameof(Parent), $"This component must have a parent of type {nameof(AppDrawer)}!");
+                await this.TitleChanged.InvokeAsync(options.Title);
+            }
+
+            if (this.Subtitle != options.Subtitle)
+            {
+                await this.SubtitleChanged.InvokeAsync(options.Subtitle);
+            }
+
+            if (this.UseImage != options.UseImage)
+            {
+                await this.UseImageChanged.InvokeAsync(options.UseImage);
             }
         }
     }

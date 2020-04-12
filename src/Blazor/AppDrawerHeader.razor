@@ -1,17 +1,19 @@
-<div class="mdc-drawer__header @Class" @attributes="@ExtraAttributes">
+@inherits ChildComponent<AppDrawer>
+    
+<div class="mdc-drawer__header @Class" style="@Style" @attributes="@ExtraAttributes">
     @if (ChildContent is null)
     {
         @if (UseImage)
         {
-            <div class="mdc-drawer__image-container"><img src="@ImageSource" width="@ImageWidth" height="@ImageHeight" class="mdc-drawer__image" /></div>
+            <div class="mdc-drawer__image-container"><img src="@Image" width="@ImageWidth" height="@ImageHeight" class="mdc-drawer__image" /></div>
         }
         @if (!string.IsNullOrWhiteSpace(Title))
         {
-            <h3 class="mdc-drawer__title">@Title</h3>
+            <h3 class="mdc-drawer__title" style="color:@Color;">@Title</h3>
         }
         @if (!string.IsNullOrWhiteSpace(Subtitle))
         {
-            <h3 class="mdc-drawer__subtitle">@Subtitle</h3>
+            <h3 class="mdc-drawer__subtitle" style="color:@Color;">@Subtitle</h3>
         }
     }
     else

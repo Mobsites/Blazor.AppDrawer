@@ -1,26 +1,41 @@
 @inherits LayoutComponentBase
 
 <AppDrawer 
-    ModalOnly="@ModalOnly"
-    BackgroundImageColorDirection="@BackgroundImageColorDirection"
-    BackgroundImageStartColor="@BackgroundImageStartColor" 
-    BackgroundImageEndColor="@BackgroundImageEndColor"
-    @ref="AppDrawer">
+    KeepState
+    @bind-ModalOnly="@ModalOnly"
+    @bind-ResponsiveBreakpoint="@ResponsiveBreakpoint"
+    @bind-Color="@Color"
+    @bind-BackgroundMode="@BackgroundMode"
+    @bind-BackgroundColorDirection="@BackgroundColorDirection"
+    @bind-BackgroundColorStart="@BackgroundColorStart" 
+    @bind-BackgroundColorEnd="@BackgroundColorEnd"
+    BackgroundImage="skyline.jpg">
 
     @if (HasHeader && !ScrollableHeader)
     {
-        <AppDrawerHeader UseImage="@UseHeaderImage" Title="Demo" />
+        <AppDrawerHeader 
+            Image="blazor.png"
+            @bind-UseImage="@UseImage" 
+            @bind-Title="@Title"
+            @bind-Subtitle="@Subtitle" />
     }
-    
+
     <AppDrawerContent>
+
         @if (HasHeader && ScrollableHeader)
         {
-            <AppDrawerHeader UseImage Title="Demo" />
+            <AppDrawerHeader 
+            Image="blazor.png"
+            @bind-UseImage="@UseImage" 
+            @bind-Title="@Title"
+            @bind-Subtitle="@Subtitle" />
         }
+        
         <nav class="nav flex-column">
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                    <span class="oi oi-home" aria-hidden="true" tabindex="0"></span> Home
+                    @* <span class="oi oi-home" aria-hidden="true" tabindex="0"></span> Home *@
+                    <Icon Variant="home" Text="Home" />
                 </NavLink>
             </div>
             <div class="nav-item px-3">
@@ -46,96 +61,95 @@
                 </NavLink>
             </div>
             <AppDrawerContentDivider />
-            <AppDrawerContentSubheader>Other actions</AppDrawerContentSubheader>
+            <AppDrawerContentSubheader>Other Actions</AppDrawerContentSubheader>
             <AppDrawerContentSubheader>(demonstrates srcollability)</AppDrawerContentSubheader>
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other2">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 2
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other3">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 3
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other4">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 4
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other5">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 5
+                </NavLink>
+            </div>
+            <AppDrawerContentDivider />
+            <AppDrawerContentSubheader>More Actions</AppDrawerContentSubheader>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="other6">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 6
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other7">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 7
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other8">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 8
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other9">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 9
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other10">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 10
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other11">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 11
+                </NavLink>
+            </div>
+            <AppDrawerContentDivider />
+            <AppDrawerContentSubheader>Even More Actions</AppDrawerContentSubheader>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="other12">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 12
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other13">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 13
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other14">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 14
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other15">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 15
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other16">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 16
                 </NavLink>
             </div>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
-                </NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
-                </NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
-                </NavLink>
-            </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="other">
-                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Another Action
+                <NavLink class="nav-link" href="other17">
+                    <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 17
                 </NavLink>
             </div>
         </nav>
@@ -160,8 +174,6 @@
 </div>
 
 @code {
-    public AppDrawer AppDrawer { get; set; }
-
     private bool modalOnly;
     public bool ModalOnly
     {
@@ -169,6 +181,17 @@
         set 
         {
             modalOnly = value;
+            StateHasChanged();
+        }
+    }
+
+    private int? responsiveBreakpoint = 900;
+    public int? ResponsiveBreakpoint
+    {
+        get => responsiveBreakpoint;
+        set 
+        {
+            responsiveBreakpoint = value;
             StateHasChanged();
         }
     }
@@ -195,46 +218,90 @@
         }
     }
 
-    private bool useHeaderImage = true;
-    public bool UseHeaderImage
+    private string title = "Demo";
+    public string Title
     {
-        get => useHeaderImage;
-        set 
+        get => title; 
+        set
         {
-            useHeaderImage = value;
+            title = value;
             StateHasChanged();
         }
     }
 
-    private AppDrawer.BackgroundImageColorDirections backgroundImageColorDirection = AppDrawer.BackgroundImageColorDirections.TopToBottom;
-    public AppDrawer.BackgroundImageColorDirections BackgroundImageColorDirection
+    private string subtitle;
+    public string Subtitle
     {
-        get => backgroundImageColorDirection;
-        set 
+        get => subtitle; 
+        set
         {
-            backgroundImageColorDirection = value;
+            subtitle = value;
             StateHasChanged();
         }
     }
 
-    private string backgroundImageStartColor = "#052767";
-    public string BackgroundImageStartColor
+    private bool useImage = true;
+    public bool UseImage
     {
-        get => backgroundImageStartColor;
+        get => useImage;
         set 
         {
-            backgroundImageStartColor = value;
+            useImage = value;
             StateHasChanged();
         }
     }
 
-    private string backgroundImageEndColor = "#3a0647";
-    public string BackgroundImageEndColor
+    private BackgroundModes backgroundMode = BackgroundModes.Gradient;
+    public BackgroundModes BackgroundMode
     {
-        get => backgroundImageEndColor;
+        get => backgroundMode; 
+        set
+        {
+            backgroundMode = value;
+            StateHasChanged();
+        }
+    }
+
+    private BackgroundColorDirections backgroundColorDirection = BackgroundColorDirections.TopToBottom;
+    public BackgroundColorDirections BackgroundColorDirection
+    {
+        get => backgroundColorDirection;
         set 
         {
-            backgroundImageEndColor = value;
+            backgroundColorDirection = value;
+            StateHasChanged();
+        }
+    }
+
+    private string backgroundColorStart = "rgb(5, 39, 103)";
+    public string BackgroundColorStart
+    {
+        get => backgroundColorStart;
+        set 
+        {
+            backgroundColorStart = value;
+            StateHasChanged();
+        }
+    }
+
+    private string backgroundColorEnd = "#3a0647";
+    public string BackgroundColorEnd
+    {
+        get => backgroundColorEnd;
+        set 
+        {
+            backgroundColorEnd = value;
+            StateHasChanged();
+        }
+    }
+
+    private string color = "white";
+    public string Color
+    {
+        get => color;
+        set 
+        {
+            color = value;
             StateHasChanged();
         }
     }

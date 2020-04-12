@@ -1,10 +1,6 @@
-@{
-  string style = NoBackgroundColorImage
-    ? string.Empty
-    : $"background-image: linear-gradient({(int)BackgroundImageColorDirection}deg, {BackgroundImageStartColor} 0%, {BackgroundImageEndColor} 70%);";
-    
-}
-<aside class="mdc-drawer @Class" style="@style @Style" @attributes="@ExtraAttributes" >
+@inherits ParentComponent
+
+<aside class="mdc-drawer @Class" style="@Style" @attributes="@ExtraAttributes" >
     <CascadingValue Value="this">
       @ChildContent
     </CascadingValue>
