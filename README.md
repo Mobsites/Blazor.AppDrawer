@@ -36,7 +36,7 @@ At the end of the day, a C# onclick event handler or callback function must inte
 The component, therefore, works seamlessly with `Blazor TopAppBar` *without the user having to take any special steps*. In the case of using a custom app bar, as the demo demonstrate, simply applying a couple of css classes is all that is necessary.
 
 ## Getting Started
-1. Add [Nuget](https://www.nuget.org/packages/Mobsites.Blazor.MaterialDesign.AppDrawer/) package:
+1. Add [Nuget](https://www.nuget.org/packages/Mobsites.Blazor.AppDrawer/) package:
 
 ```shell
 dotnet add package Mobsites.Blazor.AppDrawer --version 1.0.0-preview3
