@@ -1,9 +1,11 @@
 [![Build Status](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_apis/build/status/Build?branchName=master)](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_build/latest?definitionId=10&branchName=master)
 
-by <a href="https://www.mobsites.com"><img align="center" src="./src/assets/mobsites-logo.png" width="36" height="36" style="padding-top: 20px;" />obsites</a>
 
 # Blazor App Drawer
+by <a href="https://www.mobsites.com"><img align="center" src="./src/assets/mobsites-logo.png" width="36" height="36" style="padding-top: 20px;" />obsites</a>
+
 A Blazor component that utilizes the [MDC Drawer](https://material.io/develop/web/components/drawers/) library to organize access to destinations and other functionality in a Blazor app.
+
 
 ## [Demo](https://www.mobsites.com/Blazor.AppDrawer/)
 Tap the link above to go to a live demo. Try some of the options to get an idea of what's possible. Then reload the app in the browser and watch how the state was kept! 
