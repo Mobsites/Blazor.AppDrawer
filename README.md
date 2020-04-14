@@ -1,9 +1,16 @@
-[![Build Status](https://dev.azure.com/allanmobleyjr/Blazor%20AppDrawer/_apis/build/status/Publish%20to%20Nuget?branchName=master)](https://dev.azure.com/allanmobleyjr/Blazor%20AppDrawer/_build/latest?definitionId=5&branchName=master)
+[![Build Status](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_apis/build/status/Build?branchName=master)](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_build/latest?definitionId=10&branchName=master)
 
-# Blazor AppDrawer
+by <a href="https://www.mobsites.com"><img align="center" src="./src/assets/mobsites-logo.png" width="36" height="36" style="padding-top: 20px;" />obsites</a>
+
+# Blazor App Drawer
 A Blazor component that utilizes the [MDC Drawer](https://material.io/develop/web/components/drawers/) library to organize access to destinations and other functionality in a Blazor app.
 
-<image src="src/assets/modal-only-mode.png" alt="Image of Modal Only Mode" width="165" height="" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<image src="src/assets/responsive-mode.png" alt="Image of Responsive Mode" width="650" height="" />
+## [Demo](https://www.mobsites.com/Blazor.AppDrawer/)
+Tap the link above to go to a live demo. Try some of the options to get an idea of what's possible. Then reload the app in the browser and watch how the state was kept! 
+
+Check out its source code [here](./demo).
+
+![Gif of Demo](src/assets/demo.gif)
 
 ## For
 * Blazor WebAssembly
@@ -16,7 +23,7 @@ A Blazor component that utilizes the [MDC Drawer](https://material.io/develop/we
 * Microsoft.AspNetCore.Components.Web (>= 3.1.2)
 
 ## Design and Development
-The design and development of this Blazor component was heavily guided by Steve Sanderson's [talk](https://youtu.be/QnBYmTpugz0) and [example](https://github.com/SteveSandersonMS/presentation-2020-01-NdcBlazorComponentLibraries), in which he outlines the best approach to building and deploying a reusable component library.
+The design and development of this Blazor component was heavily guided by Microsoft's [Steve Sanderson](https://blog.stevensanderson.com/). He outlines a superb approach to building and deploying a reusable component library in this [presentation](https://youtu.be/QnBYmTpugz0) and [example](https://github.com/SteveSandersonMS/presentation-2020-01-NdcBlazorComponentLibraries).
 
 As for the non-C# implementation of this library, obviously Google's MDC Navigation Drawer [docs](https://material.io/develop/web/components/drawers/) were consulted.
 
@@ -26,217 +33,93 @@ Also, unlike some of the other MDC drawer components out there for Blazor, this 
 
 At the end of the day, a C# onclick event handler or callback function must interop with javascript to get the desired toggling effect and, thus, seemed like an unnecessary burden on the user when the same effect could be achieved via predefined css classes.
 
-The component, therefore, works seamlessly with `Blazor TopAppBar` *without the user having to take any special steps*. In the case of using a custom app bar, as the samples demonstrate, simply applying a couple of css classes is all that is necessary.
+The component, therefore, works seamlessly with `Blazor TopAppBar` *without the user having to take any special steps*. In the case of using a custom app bar, as the demo demonstrate, simply applying a couple of css classes is all that is necessary.
 
 ## Getting Started
-1. Install [Nuget](https://www.nuget.org/packages/Mobsites.Blazor.MaterialDesign.AppDrawer/):
+1. Add [Nuget](https://www.nuget.org/packages/Mobsites.Blazor.MaterialDesign.AppDrawer/) package:
 
 ```shell
-dotnet add package Mobsites.Blazor.MaterialDesign.AppDrawer --version 1.0.0-preview2
+dotnet add package Mobsites.Blazor.AppDrawer --version 1.0.0-preview3
 ```
 
 2. Add the following link tag to `index.html` (WebAssembly) or `_Host.cshtml` (Server) just above the closing `</head>` tag, along with your other link tags:
 
 ```html
-<link href="_content/Mobsites.Blazor.MaterialDesign.AppDrawer/bundle.css" rel="stylesheet" />
+<link href="_content/Mobsites.Blazor.AppDrawer/bundle.css" rel="stylesheet" />
 ```
 
 3. Add the following script tag to `index.html` (WebAssembly) or `_Host.cshtml` (Server) just above the closing `</body>` tag, along with your other script tags:
 
 ```html
-<script src="_content/Mobsites.Blazor.MaterialDesign.AppDrawer/bundle.js"></script>
+<script src="_content/Mobsites.Blazor.AppDrawer/bundle.js"></script>
 ```
 
 4. Add the following using statement to the `_Imports.razor` file:
 
 ```html
-@using Mobsites.Blazor.MaterialDesign.Components
+@using Mobsites.Blazor
 ```
 
 5. Add the following markup to the `MainLayout.razor` file:
 
 ```html
 <!-- Add optional app bar here or below inside <AppContent> tag -->
-<AppDrawer ModalOnly="true">
-    <!-- Note the flag set to true above. For responsive mode, set to false or leave attribute off altogether -->
+<AppDrawer>
     <!-- Add optional header here. Keep outside of <AppDrawerContent> tag to avoid scrolling -->
-
     <!-- Required -->
     <AppDrawerContent>
         <!-- Add navigation content or app functionality here -->
-        <!-- Scrollable content (separate from scrollable content in <MainContent> tag below)  -->
     </AppDrawerContent>
 </AppDrawer>
-<!-- Required for responsive mode, recommended for modal only mode -->
 <AppContent>
-
-    <!-- Add optional app bar here (be sure to set <AppContent ContainsAppBar="true"> above) -->
-
-    <MainContent>
-        <!-- typically @Body -->
-        <!-- Scrollable content (separate from scrollable content in <AppDrawerContent> tag above)  -->
-    </MainContent>
+    <!-- Add optional app bar here or above at top -->
+    <!-- Add main content here -->
 </AppContent>
 ```
 
-6. Add the `Blazor TopAppBar` component or a custom app bar (shown below). Either can be placed above the `<AppDrawer>` tag or inside the `<AppContent>` tag. While adding an app bar is optional, being able to toggle the drawer when in a modal state is a must, so employ a button with the class `.app-drawer-button` at the ver least if going barless:
+6. While adding an app bar is optional, being able to toggle the drawer when in a modal state is a must, so employ a button using `AppDrawer.AppDrawerButtonMarker` for the id or as a class marker at the very least if going barless:
 
 ```html
-<!-- Note the use of the class .app-bar here -->
-<!-- This is provided out of the box, but not necessary -->
-<!-- The css for this is shown below -->
-<div class="app-bar">
-    <!-- The class .app-drawer-button below is wired up to toggle the drawer on button click -->
-    <button class="app-drawer-button mr-auto" >
-        <span class="oi oi-menu"></span>
-    </button>
-</div>
+<button id="@AppDrawer.AppDrawerButtonMarker" class="navbar-toggler no-outline mr-auto">
+    <span class="oi oi-menu align-middle"></span>
+</button>
 ```
 
 7. Add header (optional):
 
 ```html
-<!-- The image src defaults to blazor icon -->
-<AppDrawerHeader Title="Blazor AppDrawer" 
-                 Subtitle="Modal Only Mode" 
-                 ImageSource="" 
-                 ImageWidth="192" 
-                 ImageHeight="192" />
+<AppDrawerHeader 
+            Image="blazor.png"
+            UseImage 
+            Title="Demo" />
 ```
 
-or
-
+## App Drawer Attributes
+Below highlights some of the built-in C# attributes and their defaults (if any). Use intellisense to get more details and learn about others:
 ```html
-<AppDrawerHeader>
-    <!-- The image src defaults to blazor icon -->
-    <AppDrawerHeaderImage ImageSource="" ImageWidth="192" ImageHeight="192" />
-    <AppDrawerHeaderTitle>Blazor AppDrawer</AppDrawerHeaderTitle>
-    <AppDrawerHeaderSubtitle>Modal Only Mode</AppDrawerHeaderSubtitle>
-</AppDrawerHeader>
+<AppDrawer
+    KeepState="false"
+    ModalOnly="false"
+    ResponsiveBreakpoint="900"
+    Color="null"
+    BackgroundMode="BackgroundModes.None"
+    BackgroundColor="null"
+    BackgroundColorDirection="BackgroundColorDirections.BottomToTop"
+    BackgroundColorStart="null"
+    BackgroundColorEnd="null"
+    BackgroundImage="null">
+</AppDrawer>
 ```
+
 
 ## Responsive Mode Breakpoint
-The `<AppDrawer>` tag has an attribute of the name `ResponsiveBreakpoint` that accepts an integer value. The default and absolute minimum is 900 (in pixels). Anything above that will change the responsive mode media breakpoint at which the component transitions between a modal state and a fixed state. Anything below that will be ignored.
+The `<AppDrawer>` tag has an attribute of the name `ResponsiveBreakpoint` that accepts an integer value. The default is 900 (in pixels). Changing this value affects when (and if) the component transitions between a modal and fixed state.
 
-## Possible CSS Styling Conflicts
+## Keeping State
+Keeping state is as simple as setting the `KeepState` attribute to true. This component will keep relevant state in the browser's storage. To get a sense of this, check out the [demo](https://www.mobsites.com/Blazor.AppDrawer/), change some options, and refresh the browser to force a reload of the app. 
 
-This component defaults to the below css style rules, which may conflict with what you already have in place. Some of these styles are necessary for the responsive mode to work properly. Modal drawers are elevated above most of the app’s UI and generally don’t affect the screen’s layout grid, so you should be able to get by if changing any of these defaults when using the modal only mode.
+## Possible CSS Rule Conflicts
 
-```css
-@use "@material/drawer/mdc-drawer";
-@use "@material/list/mdc-list";
+You may find that your current styles conflict with this library's css rules. Some of these rules are necessary for the responsive mode to work properly. Modal drawers are elevated above most of the app’s UI and generally don’t affect the screen’s layout grid, so you should be able to get by if changing any of these defaults when using the modal only mode.
 
-body {
-    display: flex;
-    height: 100vh;
-}
-
-app {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-  
-.mdc-drawer-app-content {
-    flex: auto;
-    overflow: auto;
-    position: relative;
-}
-
-.main-content {
-    overflow: auto;
-    height: 100%;
-    padding-left: 2rem !important;
-    padding-right: 1.5rem !important;
-    padding-top: 4.5rem;
-}
-
-.app-bar {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #d6d5d5;
-    justify-content: flex-end;
-    padding-left: 1.5rem!important;
-    padding-right: 1.5rem!important;
-    z-index: 4;
-}
-
-.hide-drawer-button {
-    display: none;
-}
-
-.mdc-drawer {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-}
-
-.mdc-drawer__content .oi {
-    width: 2rem;
-    font-size: 1.1rem;
-    vertical-align: text-top;
-    top: -2px;
-}
-
-.mdc-drawer__content .nav-item {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
-}
-
-.mdc-drawer__content .nav-item:first-of-type {
-    padding-top: 1rem;
-}
-
-.mdc-drawer__content .nav-item:last-of-type {
-    padding-bottom: 1rem;
-}
-
-.mdc-drawer__content .nav-item a {
-    color: #d7d7d7;
-    border-radius: 4px;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    line-height: 3rem;
-}
-
-.mdc-drawer__content .nav-item a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
-}
-
-.mdc-drawer__content .nav-item a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
-
-.mdc-drawer__header {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    background-color: rgba(0,0,0,0.4);
-    color: white;
-}
-
-.mdc-drawer .mdc-drawer__title , .mdc-drawer .mdc-drawer__subtitle {
-    Color: white;
-}
-
-.mdc-drawer__image-container {
-    text-align: center;
-}
-
-// only apply this style if below top app bar
-.drawer-below-app-bar {
-    z-index: 7;
-}
-
-@media (min-width: 768px) {
-    app {
-        flex-direction: row;
-    }
-}
-```
+You can see all of this library's styles [here](./src/app.scss).

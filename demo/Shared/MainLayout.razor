@@ -32,30 +32,29 @@
         }
         
         <nav class="nav flex-column">
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                    @* <span class="oi oi-home" aria-hidden="true" tabindex="0"></span> Home *@
-                    <Icon Variant="home" Text="Home" />
+                    <span class="oi oi-home" aria-hidden="true" tabindex="0"></span> Home
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="counter">
                     <span class="oi oi-plus" aria-hidden="true"></span> Counter
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="fetchdata">
                     <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
                 </NavLink>
             </div>
             <AppDrawerContentDivider />
             <AppDrawerContentSubheader>Account</AppDrawerContentSubheader>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="login">
                     <span class="oi oi-account-login" aria-hidden="true" tabindex="0"></span> Login
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="register">
                     <span class="oi oi-person" aria-hidden="true"></span> Register
                 </NavLink>
@@ -63,91 +62,91 @@
             <AppDrawerContentDivider />
             <AppDrawerContentSubheader>Other Actions</AppDrawerContentSubheader>
             <AppDrawerContentSubheader>(demonstrates srcollability)</AppDrawerContentSubheader>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other2">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 2
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other3">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 3
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other4">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 4
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other5">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 5
                 </NavLink>
             </div>
             <AppDrawerContentDivider />
             <AppDrawerContentSubheader>More Actions</AppDrawerContentSubheader>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other6">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 6
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other7">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 7
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other8">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 8
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other9">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 9
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other10">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 10
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other11">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 11
                 </NavLink>
             </div>
             <AppDrawerContentDivider />
             <AppDrawerContentSubheader>Even More Actions</AppDrawerContentSubheader>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other12">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 12
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other13">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 13
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other14">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 14
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other15">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 15
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other16">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 16
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
+            <div class="nav-item px-3 @(BackgroundMode == BackgroundModes.Light ? "light-mode": string.Empty)">
                 <NavLink class="nav-link" href="other17">
                     <span class="oi oi-list" aria-hidden="true" tabindex="0"></span> Action 17
                 </NavLink>

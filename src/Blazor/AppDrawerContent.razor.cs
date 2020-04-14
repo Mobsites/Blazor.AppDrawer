@@ -15,9 +15,7 @@ namespace Mobsites.Blazor
         /// Content to render.
         /// </summary>
         [Parameter] public RenderFragment ChildContent { get; set; }
-        
-        internal string Color => Parent.Color;
-        
+                
         protected override void OnParametersSet()
         {
             // This will check for valid parent.

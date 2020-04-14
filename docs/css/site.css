@@ -199,6 +199,18 @@ h2 {
     color: white;
 }
 
+.mdc-drawer__content .nav-item.light-mode a {
+    color: rgba(0, 0, 0, 0.92);
+}
+
+.mdc-drawer__content .nav-item.light-mode a.active {
+    background-color: rgba(0,0,0,0.25);
+}
+
+.mdc-drawer__content .nav-item.light-mode a:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+
 @media (max-width: 767.98px) {
     /* .main .top-row:not(.auth) {
         display: none;

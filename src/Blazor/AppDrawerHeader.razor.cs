@@ -99,7 +99,15 @@ namespace Mobsites.Blazor
             } 
         }
 
-        internal string Color => Parent.Color;
+        /// <summary>
+        /// The foreground color for this component's dark mode.
+        /// </summary>
+        [Parameter] public override string DarkModeBackgroundColor { get; set; } = "rgba(0,0,0,0.4)";
+
+        /// <summary>
+        /// The foreground color for this component's light mode.
+        /// </summary>
+        [Parameter] public override string LightModeBackgroundColor { get; set; } = "rgba(0,0,0,0.05)";
 
         protected override void OnParametersSet()
         {

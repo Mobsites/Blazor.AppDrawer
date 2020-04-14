@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\Blazor.AppDrawer.csproj" />
-    <ProjectReference Include="..\..\Blazor.Icons\src\Blazor.Icons.csproj" />
   </ItemGroup>
 
 </Project>

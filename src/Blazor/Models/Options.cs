@@ -5,7 +5,7 @@ namespace Mobsites.Blazor
 {
     public partial class AppDrawer
     {
-        internal class Options : StatefulComponentOptions
+        internal class Options : OptionsBase
         {
             public bool ModalOnly { get; set; }
             public int? ResponsiveBreakpoint { get; set; }
