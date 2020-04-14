@@ -47,12 +47,14 @@ dotnet add package Mobsites.Blazor.AppDrawer --version 1.0.0-preview3
 2. Add the following link tag to `index.html` (WebAssembly) or `_Host.cshtml` (Server) just above the closing `</head>` tag, along with your other link tags:
 
 ```html
+<!-- The order of your style links obviously matters, so reorder them if any conflicts arise -->
 <link href="_content/Mobsites.Blazor.AppDrawer/bundle.css" rel="stylesheet" />
 ```
 
 3. Add the following script tag to `index.html` (WebAssembly) or `_Host.cshtml` (Server) just above the closing `</body>` tag, along with your other script tags:
 
 ```html
+<!-- Place this below any _framework scripts! -->
 <script src="_content/Mobsites.Blazor.AppDrawer/bundle.js"></script>
 ```
 
