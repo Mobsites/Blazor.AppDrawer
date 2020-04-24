@@ -27,6 +27,7 @@ window.Mobsites.Blazor.AppDrawer = {
             this.initPermanentDrawer();
             this.initResizeEvent();
         }
+        this.determineDrawerButtonVisibility();
         return true;
     },
     refresh: function (instance, options) {
@@ -36,10 +37,10 @@ window.Mobsites.Blazor.AppDrawer = {
         return this.init(instance, options);
     },
     initModalDrawer: function () {
-        const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');
-        if (drawerButton) {
-            drawerButton.classList.remove('hide-mobsites-blazor-app-drawer-button');
-        }
+        // const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');
+        // if (drawerButton) {
+        //     drawerButton.classList.remove('hide-mobsites-blazor-app-drawer-button');
+        // }
         const drawerElement = document.querySelector('.mdc-drawer');
         if (drawerElement) {
             drawerElement.classList.add('mdc-drawer--modal');
@@ -57,10 +58,10 @@ window.Mobsites.Blazor.AppDrawer = {
         this.initModalEvents();
     },
     initPermanentDrawer: function () {
-        const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');
-        if (drawerButton) {
-            drawerButton.classList.add('hide-mobsites-blazor-app-drawer-button');
-        }
+        // const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');
+        // if (drawerButton) {
+        //     drawerButton.classList.add('hide-mobsites-blazor-app-drawer-button');
+        // }
         const drawerElement = document.querySelector('.mdc-drawer');
         if (drawerElement) {
             drawerElement.classList.remove('mdc-drawer--modal');
@@ -102,8 +103,19 @@ window.Mobsites.Blazor.AppDrawer = {
     closeDrawerClickEvent: function () {
         window.Mobsites.Blazor.AppDrawer.self.open = false;
     },
+    determineDrawerButtonVisibility: function () {
+        const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');
+        if (drawerButton && window.Mobsites.Blazor.AppDrawer.options) {
+            if (window.Mobsites.Blazor.AppDrawer.options.modalOnly || window.matchMedia('(max-width: ' + window.Mobsites.Blazor.AppDrawer.options.responsiveBreakpoint + 'px)').matches) {
+                drawerButton.classList.remove('hide-mobsites-blazor-app-drawer-button');
+            }
+            else {
+                drawerButton.classList.add('hide-mobsites-blazor-app-drawer-button');
+            }
+        }
+    },
     invokeNetRefresh: function () {
-        // Prevent window.resize event from firing .Net invokeMethodAsync('Refresh', true) more than once.
+        // Prevent window.resize event from double firing.
         clearTimeout(window.Mobsites.Blazor.AppDrawer.timeoutId);
         // Delay the resize handling by 200ms
         window.Mobsites.Blazor.AppDrawer.timeoutId = setTimeout(() => window.Mobsites.Blazor.AppDrawer.instance.invokeMethodAsync('Refresh', true), 200);

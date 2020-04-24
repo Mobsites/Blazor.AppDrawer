@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 namespace Mobsites.Blazor
 {
     /// <summary>
-    /// Blazor child component for adding a content divider to the <see cref="AppDrawerContent"/> component.
+    /// Child component for adding a content divider to the <see cref="AppDrawerContent"/> component.
     /// </summary>
     public partial class AppDrawerContentDivider
     {

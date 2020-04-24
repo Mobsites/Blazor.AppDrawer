@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Components;
 namespace Mobsites.Blazor
 {
     /// <summary>
-    /// Blazor child component for adding header content to the <see cref="AppDrawer"/> component.
-    /// This will not scroll with the rest of the drawer content if placed as direct decendent of the <see cref="AppDrawer"/> component. 
+    /// Subcomponent for adding header content to the <see cref="AppDrawer"/> component.
     /// Things like account switchers and titles should live here.
     /// </summary>
     public partial class AppDrawerHeader

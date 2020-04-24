@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 namespace Mobsites.Blazor
 {
     /// <summary>
-    /// Blazor child component for adding scrollable content to the <see cref="AppDrawer"/> component.
+    /// Subcomponent for adding scrollable content to the <see cref="AppDrawer"/> component.
     /// Things like navigation destinations and other app functionality, such as a restart option, should live here.
     /// </summary>
     public partial class AppDrawerContent

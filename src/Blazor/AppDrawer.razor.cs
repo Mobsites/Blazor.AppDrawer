@@ -9,49 +9,20 @@ using System.Threading.Tasks;
 namespace Mobsites.Blazor
 {
     /// <summary>
-    /// Blazor component that utilizes the MDC Drawer library to organize access to destinations and other functionality in a Blazor app.
+    /// UI component for organizing access to destinations and other functionality in the app.
     /// </summary>
     public partial class AppDrawer : IDisposable
     {
-        private DotNetObjectReference<AppDrawer> self;
-
-        /// <summary>
-        /// Whether the component has been completely initialized, including its JavaScript representation.
-        /// </summary>
-        private bool initialized;
+        /****************************************************
+        *
+        *  PUBLIC INTERFACE
+        *
+        ****************************************************/
 
         /// <summary>
         /// Content to render.
         /// </summary>
         [Parameter] public RenderFragment ChildContent { get; set; }
-
-
-        /// <summary>
-        /// Child reference. (Assigned by child.)
-        /// </summary>
-        internal AppDrawerHeader AppDrawerHeader { get; set; }
-
-        /// <summary>
-        /// Child reference. (Assigned by child.)
-        /// </summary>
-        internal AppDrawerContent AppDrawerContent { get; set; }
-
-        /// <summary>
-        /// Use this css class marker on a div wrapper around main content when using the <see cref="AppDrawer"/> component.
-        /// Or use the <see cref="AppContent"/> component to contain the main content.
-        /// </summary>
-        public static string AppContentMarker => "mdc-drawer-app-content";
-
-        /// <summary>
-        /// Use this as the id or as a class marker for the main content in your Blazor app.
-        /// </summary>
-        public static string MainContentMarker => "blazor-main-content";
-
-        /// <summary>
-        /// Use this as the id or as a class marker for the app drawer button in your Blazor app.
-        /// Note: This is not necessary when using Blazor Top App Bar.
-        /// </summary>
-        public static string AppDrawerButtonMarker => "mobsites-blazor-app-drawer-button";
 
         /// <summary>
         /// Set this to true to have a modal dismissable drawer across all device sizes. 
@@ -91,13 +62,38 @@ namespace Mobsites.Blazor
         /// </summary>
         [Parameter] public EventCallback<int?> ResponsiveBreakpointChanged { get; set; }
 
+        /// <summary>
+        /// Clear all state for this UI component and any of its dependents from browser storage.
+        /// </summary>
+        public ValueTask ClearState() => this.ClearState<AppDrawer, Options>();
+
+
+
+        /****************************************************
+        *
+        *  NON-PUBLIC INTERFACE
+        *
+        ****************************************************/
+        
+        private DotNetObjectReference<AppDrawer> self;
+        protected DotNetObjectReference<AppDrawer> Self
+        {
+            get => self ?? (Self = DotNetObjectReference.Create(this));
+            set => self = value;
+        }
+
+        /// <summary>
+        /// Child reference. (Assigned by child.)
+        /// </summary>
+        internal AppDrawerHeader AppDrawerHeader { get; set; }
+
+        /// <summary>
+        /// Child reference. (Assigned by child.)
+        /// </summary>
+        internal AppDrawerContent AppDrawerContent { get; set; }
+
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
-            if (self is null)
-            {
-                 self = DotNetObjectReference.Create(this);
-            }
-
             if (firstRender)
             {
                 await Initialize();
@@ -110,11 +106,7 @@ namespace Mobsites.Blazor
 
         private async Task Initialize()
         {
-            var options = this.KeepState 
-                ? this.UseSessionStorageForState
-                    ? await this.Storage.Session.GetAsync<Options>(nameof(AppDrawer))
-                    : await this.Storage.Local.GetAsync<Options>(nameof(AppDrawer))
-                : null;
+            var options = await this.GetState<AppDrawer, Options>();
 
             if (options is null)
             {
@@ -130,10 +122,10 @@ namespace Mobsites.Blazor
             
             this.initialized = await this.jsRuntime.InvokeAsync<bool>(
                 "Mobsites.Blazor.AppDrawer.init",
-                self,
+                Self,
                 options);
 
-            await Save(options);
+            await this.Save<AppDrawer, Options>(options);
         }
 
 
@@ -143,11 +135,7 @@ namespace Mobsites.Blazor
         [JSInvokable]
         public async Task Refresh(bool destroy = false)
         {
-            var options = this.KeepState 
-                ? this.UseSessionStorageForState
-                    ? await this.Storage.Session.GetAsync<Options>(nameof(AppDrawer))
-                    : await this.Storage.Local.GetAsync<Options>(nameof(AppDrawer))
-                : null;
+            var options = await this.GetState<AppDrawer, Options>();
 
             // Use current state if...
             if (this.initialized || options is null)
@@ -159,10 +147,10 @@ namespace Mobsites.Blazor
 
             this.initialized = await this.jsRuntime.InvokeAsync<bool>(
                 "Mobsites.Blazor.AppDrawer.refresh",
-                self,
+                Self,
                 options);
-            
-            await Save(options);
+
+            await this.Save<AppDrawer, Options>(options);
         }
 
         internal Options SetOptions()
@@ -196,30 +184,7 @@ namespace Mobsites.Blazor
             // await this.AppDrawerContent?.CheckState(options);
         }
 
-        private async Task Save(Options options)
-        {
-            // Clear destory before saving.
-            options.Destroy = false;
-
-            if (this.KeepState)
-            {
-                if (this.UseSessionStorageForState)
-                {
-                    await this.Storage.Session.SetAsync(nameof(AppDrawer), options);
-                }
-                else
-                {
-                    await this.Storage.Local.SetAsync(nameof(AppDrawer), options);
-                }
-            }
-            else
-            {
-                await this.Storage.Session.RemoveAsync<Options>(nameof(AppDrawer));
-                await this.Storage.Local.RemoveAsync<Options>(nameof(AppDrawer));
-            }
-        }
-
-        public void Dispose()
+        public override void Dispose()
         {
             self?.Dispose();
             this.initialized = false;

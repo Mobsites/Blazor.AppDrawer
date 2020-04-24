@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Components;
 namespace Mobsites.Blazor
 {
     /// <summary>
-    /// Child component for adding a subheader to the <see cref="AppDrawerContent"/> component.
+    /// Child component for adding an organized list to the <see cref="AppDrawerContentList"/> component.
     /// </summary>
-    public partial class AppDrawerContentSubheader
+    public partial class AppDrawerContentListAction
     {
         /// <summary>
         /// Content to render.
@@ -16,13 +16,13 @@ namespace Mobsites.Blazor
         [Parameter] public RenderFragment ChildContent { get; set; }
 
         /// <summary>
-        /// The foreground color for this component's dark mode.
+        /// A URL or a URL fragment that the hyperlink points to.
         /// </summary>
-        [Parameter] public override string DarkModeColor { get; set; } = "rgba(255, 255, 255, 0.3)";
+        [Parameter] public string Href { get; set; }
 
         /// <summary>
-        /// The foreground color for this component's light mode.
+        /// Whether this action is activated.
         /// </summary>
-        [Parameter] public override string LightModeColor { get; set; } = "rgb(128, 128, 128)";
+        [Parameter] public bool IsActivated { get; set; }
     }
 }

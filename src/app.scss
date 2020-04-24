@@ -4,9 +4,14 @@
 @use "@material/drawer/mdc-drawer";
 @use "@material/list/mdc-list";
 
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
 body {
     display: flex;
     height: 100vh;
+    margin: 0px;
 }
 
 app {
@@ -40,12 +45,7 @@ app {
 }
 
 .hide-mobsites-blazor-app-drawer-button {
-    display: none;
-}
-
-// only apply this style if below top app bar
-.drawer-below-app-bar {
-    z-index: 7;
+    display: none !important;
 }
 
 @media (min-width: 768px) {

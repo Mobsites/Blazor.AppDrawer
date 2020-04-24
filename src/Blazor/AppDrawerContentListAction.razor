@@ -1,0 +1,29 @@
+@inherits ChildComponent<AppDrawerContentList>
+
+@if (string.IsNullOrWhiteSpace(Href))
+{
+    <div class="mdc-list-item @Class" style="@Style" @attributes="@ExtraAttributes">
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </div>
+}
+else
+{
+    if (IsActivated)
+    {
+        <a href="@Href" aria-current="page" class="mdc-list-item mdc-list-item--activated @Class" style="@Style" @attributes="@ExtraAttributes">
+            <CascadingValue Value="this">
+                @ChildContent
+            </CascadingValue>
+        </a>
+    }
+    else
+    {
+        <a href="@Href" class="mdc-list-item @Class" style="@Style" @attributes="@ExtraAttributes">
+            <CascadingValue Value="this">
+                @ChildContent
+            </CascadingValue>
+        </a>
+    }
+}

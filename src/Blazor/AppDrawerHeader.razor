@@ -1,4 +1,4 @@
-@inherits ChildComponent<AppDrawer>
+@inherits Subcomponent<AppDrawer>
     
 <div class="mdc-drawer__header @Class" style="@Style" @attributes="@ExtraAttributes">
     @if (ChildContent is null)
@@ -18,6 +18,8 @@
     }
     else
     {
-        @ChildContent
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
     }
 </div>
