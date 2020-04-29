@@ -1,0 +1,34 @@
+@inherits ChildComponent<AppDrawerContent>
+@using Microsoft.AspNetCore.Components.Routing
+
+@{
+    string css = ContrastMode switch
+    {
+        ContrastModes.Dark => "mdc-drawer__content--dark-mode-action",
+        ContrastModes.Light => "mdc-drawer__content--light-mode-action",
+        _ => "mdc-drawer__content--light-mode-action"
+    };
+}
+
+@if (string.IsNullOrWhiteSpace(Href))
+{
+    <div class="mdc-drawer__content--action @css @Class" style="@Style" @attributes="@ExtraAttributes">
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </div>
+}
+else
+{
+    css = $"mdc-drawer__content--action {css} {Class}";
+
+    <NavLink class="@css" 
+             style="@Style" 
+             @attributes="ExtraAttributes" 
+             href="@Href" 
+             Match="NavLinkMatch.All">
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </NavLink>
+}

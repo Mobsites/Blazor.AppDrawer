@@ -15,6 +15,11 @@ namespace Mobsites.Blazor
         /// Content to render.
         /// </summary>
         [Parameter] public RenderFragment ChildContent { get; set; }
+
+        /// <summary>
+        /// Whether to inherit a parent's colors (dark, light, or normal modes).
+        /// </summary>
+        [Parameter] public override bool InheritParentColors { get; set; } = true;
                 
         protected override void OnParametersSet()
         {
