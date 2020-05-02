@@ -11,6 +11,12 @@ namespace Mobsites.Blazor
     /// </summary>
     public partial class AppDrawerContent
     {
+        /****************************************************
+        *
+        *  PUBLIC INTERFACE
+        *
+        ****************************************************/
+
         /// <summary>
         /// Content to render.
         /// </summary>
@@ -20,22 +26,22 @@ namespace Mobsites.Blazor
         /// Whether to inherit a parent's colors (dark, light, or normal modes).
         /// </summary>
         [Parameter] public override bool InheritParentColors { get; set; } = true;
-                
+
+
+
+        /****************************************************
+        *
+        *  NON-PUBLIC INTERFACE
+        *
+        ****************************************************/
+
+        internal ElementReference ElemRef { get; set; }
+
         protected override void OnParametersSet()
         {
             // This will check for valid parent.
             base.OnParametersSet();
-            base.Parent.AppDrawerContent = this;
-        }
-
-        internal void SetOptions(AppDrawer.Options options)
-        {
-           
-        }
-
-        internal void CheckState(AppDrawer.Options options)
-        {
-            
+            base.Parent.Content = this;
         }
     }
 }

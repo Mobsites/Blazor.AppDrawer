@@ -3,7 +3,6 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System;
 using System.Threading.Tasks;
 
 namespace Mobsites.Blazor
@@ -11,7 +10,7 @@ namespace Mobsites.Blazor
     /// <summary>
     /// UI component for organizing access to destinations and other functionality in the app.
     /// </summary>
-    public partial class AppDrawer : IDisposable
+    public partial class AppDrawer
     {
         /****************************************************
         *
@@ -41,11 +40,12 @@ namespace Mobsites.Blazor
         /// The css media breakpoint (in pixels) at which the drawer goes from modal to fixed in responsive mode.
         /// The default is 900px, which also the minmum allowed.
         /// </summary>
-        [Parameter] public int? ResponsiveBreakpoint
-        { 
-            get => responsiveBreakpoint; 
-            set 
-            {   
+        [Parameter]
+        public int? ResponsiveBreakpoint
+        {
+            get => responsiveBreakpoint;
+            set
+            {
                 if (value is null)
                 {
                     responsiveBreakpoint = 900;
@@ -53,8 +53,8 @@ namespace Mobsites.Blazor
                 else if (value >= 0)
                 {
                     responsiveBreakpoint = value;
-                } 
-            } 
+                }
+            }
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Mobsites.Blazor
         *  NON-PUBLIC INTERFACE
         *
         ****************************************************/
-        
+
         private DotNetObjectReference<AppDrawer> self;
         protected DotNetObjectReference<AppDrawer> Self
         {
@@ -82,15 +82,13 @@ namespace Mobsites.Blazor
             set => self = value;
         }
 
-        /// <summary>
-        /// Child reference. (Assigned by child.)
-        /// </summary>
-        internal AppDrawerHeader AppDrawerHeader { get; set; }
+        protected ElementReference ElemRef { get; set; }
+
 
         /// <summary>
         /// Child reference. (Assigned by child.)
         /// </summary>
-        internal AppDrawerContent AppDrawerContent { get; set; }
+        internal AppDrawerContent Content { get; set; }        
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
@@ -110,7 +108,7 @@ namespace Mobsites.Blazor
 
             if (options is null)
             {
-                options = this.SetOptions();
+                options = this.GetOptions();
             }
             else
             {
@@ -119,10 +117,14 @@ namespace Mobsites.Blazor
 
             // Destroy any lingering js representation.
             options.Destroy = true;
-            
+
             this.initialized = await this.jsRuntime.InvokeAsync<bool>(
                 "Mobsites.Blazor.AppDrawer.init",
                 Self,
+                new {
+                    Drawer = this.ElemRef,
+                    Content = this.Content?.ElemRef
+                },
                 options);
 
             await this.Save<AppDrawer, Options>(options);
@@ -140,7 +142,7 @@ namespace Mobsites.Blazor
             // Use current state if...
             if (this.initialized || options is null)
             {
-                options = this.SetOptions();
+                options = this.GetOptions();
             }
 
             options.Destroy = destroy;
@@ -148,46 +150,53 @@ namespace Mobsites.Blazor
             this.initialized = await this.jsRuntime.InvokeAsync<bool>(
                 "Mobsites.Blazor.AppDrawer.refresh",
                 Self,
+                new {
+                    Drawer = this.ElemRef,
+                    Content = this.Content?.ElemRef
+                },
                 options);
 
             await this.Save<AppDrawer, Options>(options);
         }
 
-        internal Options SetOptions()
+        internal Options GetOptions()
         {
-            var options = new Options 
+            var options = new Options
             {
                 ModalOnly = this.ModalOnly,
                 ResponsiveBreakpoint = this.ResponsiveBreakpoint
             };
 
             base.SetOptions(options);
-            this.AppDrawerHeader?.SetOptions(options);
-            // this.AppDrawerContent?.SetOptions(options);
 
             return options;
         }
 
         internal async Task CheckState(Options options)
         {
+            bool stateChanged = false;
+
             if (this.ModalOnly != options.ModalOnly)
             {
                 await this.ModalOnlyChanged.InvokeAsync(options.ModalOnly);
+                stateChanged = true;
             }
             if (this.ResponsiveBreakpoint != options.ResponsiveBreakpoint)
             {
                 await this.ResponsiveBreakpointChanged.InvokeAsync(options.ResponsiveBreakpoint);
+                stateChanged = true;
             }
 
-            await base.CheckState(options);
-            await this.AppDrawerHeader?.CheckState(options);
-            // await this.AppDrawerContent?.CheckState(options);
+            bool baseStateChanged = await base.CheckState(options);
+
+            if (stateChanged || baseStateChanged)
+                StateHasChanged();
         }
 
         public override void Dispose()
         {
             self?.Dispose();
-            this.initialized = false;
+            base.Dispose();
         }
     }
 }

@@ -1,6 +1,6 @@
 @inherits StatefulComponent
 
-<aside class="mdc-drawer @Class" style="@Style" @attributes="@ExtraAttributes" >
+<aside @ref="ElemRef" class="mdc-drawer @Class" style="@Style" @attributes="@ExtraAttributes" >
     <CascadingValue Value="this">
       @ChildContent
     </CascadingValue>

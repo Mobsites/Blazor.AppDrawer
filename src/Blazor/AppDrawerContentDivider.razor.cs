@@ -15,15 +15,16 @@ namespace Mobsites.Blazor
         /// <summary>
         /// Styles for directly affecting this component go here.
         /// </summary>
-        [Parameter] public override string Style
-        { 
-            get 
+        [Parameter]
+        public override string Style
+        {
+            get
             {
                 string color = string.IsNullOrWhiteSpace(this.Color) ? null : $"border-bottom-color: {this.Color};";
-                
+
                 return color + style;
             }
-            set => style = value; 
+            set => style = value;
         }
 
         /// <summary>
