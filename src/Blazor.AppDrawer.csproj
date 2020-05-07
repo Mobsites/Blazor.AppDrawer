@@ -11,23 +11,22 @@
     <Company>Mobsites</Company>
     <Authors>Allan Mobley</Authors>
     <Copyright>© 2020 Mobsites</Copyright>
-    <Description>A Blazor component that utilizes the MDC Drawer library to organize access to destinations and other functionality in a Blazor app.</Description>
+    <Description>A Blazor UI component for organizing access to destinations and other functionality in the app.</Description>
     <PackageId>Mobsites.Blazor.AppDrawer</PackageId>
     <IsPackable>true</IsPackable>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>mobsites-logo.png</PackageIcon>
-    <PackageReleaseNotes>Redesigned to follow new dev pattern. Breaking changes.</PackageReleaseNotes>
-    <PackageVersion>1.0.0-preview3</PackageVersion>
+    <PackageReleaseNotes>Official release.</PackageReleaseNotes>
+    <PackageVersion>1.0.0</PackageVersion>
     <PackageTags>blazor;Google;material;design;drawer;component</PackageTags>
     <PackageProjectUrl>https://www.mobsites.com</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Mobsites/Blazor.AppDrawer</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.2" />
-    <PackageReference Include="Mobsites.Blazor.BaseComponents" Version="1.0.0-preview1" />
+    <PackageReference Include="Mobsites.Blazor.BaseComponents" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>

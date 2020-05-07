@@ -1,0 +1,219 @@
+@inherits LayoutComponentBase
+
+<AppDrawer
+    KeepState
+    @bind-ModalOnly="@ModalOnly"
+    @bind-ResponsiveBreakpoint="@ResponsiveBreakpoint"
+    @bind-Color="@Color"
+    @bind-BackgroundMode="@BackgroundMode"
+    @bind-BackgroundColorDirection="@BackgroundColorDirection"
+    @bind-BackgroundColorStart="@BackgroundColorStart" 
+    @bind-BackgroundColorEnd="@BackgroundColorEnd"
+    BackgroundImage="_content/Shared/skyline.jpg">
+
+    @if (!ScrollableHeader)
+    {
+        <AppDrawerHeader>
+            <AppDrawerHeaderLogo Src="_content/Shared/blazor.png" />
+            <AppDrawerHeaderTitle>Demo</AppDrawerHeaderTitle>
+        </AppDrawerHeader>
+    }
+
+    <AppDrawerContent>
+
+        @if (ScrollableHeader)
+        {
+            <AppDrawerHeader>
+                <AppDrawerHeaderLogo Src="_content/Shared/blazor.png" />
+                <AppDrawerHeaderTitle>Demo</AppDrawerHeaderTitle>
+            </AppDrawerHeader>
+        }
+
+        <AppDrawerContentAction Href="/">
+            <span class="oi oi-home" aria-hidden="true" tabindex="0"></span> Home
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="counter">
+            <span class="oi oi-plus" aria-hidden="true"></span> Counter
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="fetchdata">
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="https://www.mobsites.com/blazor/app-drawer" target="_blank">
+            <span class="oi oi-document" aria-hidden="true"></span> Docs
+        </AppDrawerContentAction>
+        <AppDrawerContentDivider />
+        <AppDrawerContentSubheader>Account</AppDrawerContentSubheader>
+        <AppDrawerContentAction Href="account/login">
+            <span class="oi oi-account-login" aria-hidden="true"></span> Login
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="account/register">
+            <span class="oi oi-person" aria-hidden="true"></span> Register
+        </AppDrawerContentAction>
+        <AppDrawerContentDivider />
+        <AppDrawerContentSubheader>Other Actions</AppDrawerContentSubheader>
+        <AppDrawerContentSubheader>(demonstrates srcollability)</AppDrawerContentSubheader>
+        <AppDrawerContentAction Href="action/1">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 1
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/2">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 2
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/3">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 3
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/4">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 4
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/5">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 5
+        </AppDrawerContentAction>
+        <AppDrawerContentDivider />
+        <AppDrawerContentSubheader>More Actions</AppDrawerContentSubheader>
+        <AppDrawerContentAction Href="action/6">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 6
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/7">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 7
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/8">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 8
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/9">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 9
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/10">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 10
+        </AppDrawerContentAction>
+        <AppDrawerContentDivider />
+        <AppDrawerContentSubheader>Even More Actions</AppDrawerContentSubheader>
+        <AppDrawerContentAction Href="action/11">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 11
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/12">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 12
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/13">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 13
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/14">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 14
+        </AppDrawerContentAction>
+        <AppDrawerContentAction Href="action/15">
+            <span class="oi oi-person" aria-hidden="true"></span> Action 15
+        </AppDrawerContentAction>
+    </AppDrawerContent>
+</AppDrawer>
+<AppContent class="main">
+    <div class="top-row px-4">
+        <AppDrawerTrigger Class="mr-auto">
+            <button class="navbar-toggler no-outline">
+                <span class="oi oi-menu align-middle"></span>
+            </button>
+        </AppDrawerTrigger>
+        <a href="https://github.com/Mobsites/Blazor.AppDrawer" target="_blank" class="ml-md-auto pr-2 pr-md-0">
+            <img src="_content/Shared/dark-github.png" width="24" height="24" />
+        </a>
+        <a href="https://github.com/Mobsites" target="_blank" class="pr-2 pr-md-0">
+            <img src="_content/Shared/mobsites-logo.png" width="24" height="24" />
+        </a>
+        <a href="https://github.com/allan-mobley-jr" target="_blank">
+            <img src="_content/Shared/me.png" width="24" height="24" />
+        </a>
+    </div>
+
+    <div class="content px-4">
+        <CascadingValue Value="this">
+            @Body
+        </CascadingValue>
+    </div>
+</AppContent>
+
+@code {
+    private bool modalOnly;
+    public bool ModalOnly
+    {
+        get => modalOnly;
+        set 
+        {
+            modalOnly = value;
+            StateHasChanged();
+        }
+    }
+
+    private int? responsiveBreakpoint = 900;
+    public int? ResponsiveBreakpoint
+    {
+        get => responsiveBreakpoint;
+        set 
+        {
+            responsiveBreakpoint = value;
+            StateHasChanged();
+        }
+    }
+
+    private bool scrollableHeader;
+    public bool ScrollableHeader
+    {
+        get => scrollableHeader;
+        set 
+        {
+            scrollableHeader = value;
+            StateHasChanged();
+        }
+    }
+
+    private BackgroundModes backgroundMode = BackgroundModes.Gradient;
+    public BackgroundModes BackgroundMode
+    {
+        get => backgroundMode; 
+        set
+        {
+            backgroundMode = value;
+            StateHasChanged();
+        }
+    }
+
+    private BackgroundColorDirections backgroundColorDirection = BackgroundColorDirections.TopToBottom;
+    public BackgroundColorDirections BackgroundColorDirection
+    {
+        get => backgroundColorDirection;
+        set 
+        {
+            backgroundColorDirection = value;
+            StateHasChanged();
+        }
+    }
+
+    private string backgroundColorStart = "rgb(5, 39, 103)";
+    public string BackgroundColorStart
+    {
+        get => backgroundColorStart;
+        set 
+        {
+            backgroundColorStart = value;
+            StateHasChanged();
+        }
+    }
+
+    private string backgroundColorEnd = "#3a0647";
+    public string BackgroundColorEnd
+    {
+        get => backgroundColorEnd;
+        set 
+        {
+            backgroundColorEnd = value;
+            StateHasChanged();
+        }
+    }
+
+    private string color = "white";
+    public string Color
+    {
+        get => color;
+        set 
+        {
+            color = value;
+            StateHasChanged();
+        }
+    }
+}

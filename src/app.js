@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 import { MDCDrawer } from "@material/drawer/index";
-import { MDCList } from "@material/list/index";
 
 if (!window.Mobsites) {
     window.Mobsites = {
@@ -12,100 +11,112 @@ if (!window.Mobsites) {
     };
 }
 
-window.Mobsites.Blazor.AppDrawer = {
-    init: function (instance, options) {
-        window.Mobsites.Blazor.AppDrawer.instance = instance;
-        window.Mobsites.Blazor.AppDrawer.options = options;
-        if (options.modalOnly) {
-            this.initModalDrawer();
-        }
-        else if (window.matchMedia('(max-width: ' + options.responsiveBreakpoint + 'px)').matches) {
-            this.initModalDrawer();
+window.Mobsites.Blazor.AppDrawers = {
+    store: [],
+    init: function (dotNetObjRef, elemRefs, options) {
+        try {
+            const index = this.add(new Mobsites_Blazor_AppDrawer(dotNetObjRef, elemRefs, options));
+            dotNetObjRef.invokeMethodAsync('SetIndex', index);
             this.initResizeEvent();
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
         }
-        else {
-            this.initPermanentDrawer();
-            this.initResizeEvent();
-        }
-        return true;
     },
-    refresh: function (instance, options) {
-        if (options.modalOnly != window.Mobsites.Blazor.AppDrawer.options.modalOnly) {
-            options.destroy = true;
-        }
-        return this.init(instance, options);
-    },
-    initModalDrawer: function () {
-        const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');
-        if (drawerButton) {
-            drawerButton.classList.remove('hide-mobsites-blazor-app-drawer-button');
-        }
-        const drawerElement = document.querySelector('.mdc-drawer');
-        if (drawerElement) {
-            drawerElement.classList.add('mdc-drawer--modal');
-        }
-        if (drawerElement && (!window.Mobsites.Blazor.AppDrawer.initialized || window.Mobsites.Blazor.AppDrawer.options.destroy)) {
-            if (window.Mobsites.Blazor.AppDrawer.self) {
-                window.Mobsites.Blazor.AppDrawer.self.destroy();
+    add: function (appDrawer) {
+        for (let i = 0; i < this.store.length; i++) {
+            if (this.store[i] == null) {
+                this.store[i] = appDrawer;
+                return i;
             }
-            // Modal uses the MDCDrawer component, which will instantiate MDCList automatically.
-            const drawer = MDCDrawer.attachTo(drawerElement);
-            drawer.open = false;
-            window.Mobsites.Blazor.AppDrawer.initialized = true;
-            window.Mobsites.Blazor.AppDrawer.self = drawer;
         }
-        this.initModalEvents();
+        const index = this.store.length;
+        this.store[index] = appDrawer;
+        return index;
     },
-    initPermanentDrawer: function () {
-        const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mdc-top-app-bar__navigation-icon, .mobsites-blazor-app-drawer-button');
-        if (drawerButton) {
-            drawerButton.classList.add('hide-mobsites-blazor-app-drawer-button');
-        }
-        const drawerElement = document.querySelector('.mdc-drawer');
-        if (drawerElement) {
-            drawerElement.classList.remove('mdc-drawer--modal');
-        }
-        const listElement = document.querySelector('.mdc-drawer .mdc-list, .mdc-drawer .mdc-drawer__content');
-        if (listElement && (!window.Mobsites.Blazor.AppDrawer.initialized || window.Mobsites.Blazor.AppDrawer.options.destroy)) {
-            if (window.Mobsites.Blazor.AppDrawer.self) {
-                window.Mobsites.Blazor.AppDrawer.self.destroy();
-            }
-            // For permanently visible drawers, the list must be instantiated for appropriate keyboard interaction.
-            const list = new MDCList(listElement);
-            list.wrapFocus = true;
-            window.Mobsites.Blazor.AppDrawer.initialized = true;
-            window.Mobsites.Blazor.AppDrawer.self = list;
-        }
+    update: function (index, options) {
+        this.store[index].update(options);
+    },
+    destroy: function (index) {
+        this.store[index].destroy();
+        this.store[index] = null;
     },
     initResizeEvent: function () {
-        window.addEventListener('resize', this.invokeNetRefresh);
+        if (this.store.length == 1)
+            window.addEventListener('resize', this.resize);
     },
-    initModalEvents: function () {
-        // Event for closing modal drawer when navigation or action occurs.
-        const listElement = document.querySelector('.mdc-drawer .mdc-list, .mdc-drawer .mdc-drawer__content');
-        if (listElement) {
-            listElement.addEventListener('click', this.closeDrawerClickEvent);
-        }
-        // Event for toggling modal drawer when .mobsites-blazor-app-drawer-button class is specified.
-        // As for Blazor Top App Bar, that component sets this event for the .mdc-top-app-bar__navigation-icon.
-        const drawerButton = document.getElementById('mobsites-blazor-app-drawer-button') || document.querySelector('.mobsites-blazor-app-drawer-button');
-        if (drawerButton) {
-            drawerButton.addEventListener('click', this.toggleDrawerClickEvent);
-        }
-    },
-    toggleDrawerClickEvent: function () {
-        window.Mobsites.Blazor.AppDrawer.self.open = !window.Mobsites.Blazor.AppDrawer.self.open;
-    },
-    openDrawerClickEvent: function () {
-        window.Mobsites.Blazor.AppDrawer.self.open = true;
-    },
-    closeDrawerClickEvent: function () {
-        window.Mobsites.Blazor.AppDrawer.self.open = false;
-    },
-    invokeNetRefresh: function () {
-        // Prevent window.resize event from firing .Net invokeMethodAsync('Refresh', true) more than once.
-        clearTimeout(window.Mobsites.Blazor.AppDrawer.timeoutId);
+    resize() {
+        // Prevent window.resize event from double firing.
+        clearTimeout(window.Mobsites.Blazor.AppDrawers.timeoutId);
         // Delay the resize handling by 200ms
-        window.Mobsites.Blazor.AppDrawer.timeoutId = setTimeout(() => window.Mobsites.Blazor.AppDrawer.instance.invokeMethodAsync('Refresh', true), 200);
+        window.Mobsites.Blazor.AppDrawers.timeoutId = setTimeout(() => {
+            window.Mobsites.Blazor.AppDrawers.store.forEach(drawer => {
+                if (drawer) {
+                    drawer.determineModalClassUse();
+                    drawer.determineTriggerVisibility();
+                }
+            });
+        }, 200);
+    },
+    toggle: function (index) {
+        this.store[index].toggle();
+    },
+    open: function (index) {
+        this.store[index].open = true;
+    },
+    close: function (index) {
+        this.store[index].open = false;
+    }
+}
+
+class Mobsites_Blazor_AppDrawer extends MDCDrawer {
+    constructor(dotNetObjRef, elemRefs, options) {
+        super(elemRefs.drawer);
+        this.open = false;
+        this.dotNetObjRef = dotNetObjRef;
+        this.elemRefs = elemRefs;
+        this.dotNetObjOptions = options;
+        this.initModalEvents();
+        this.determineModalClassUse();
+        this.determineTriggerVisibility();
+    }
+    update(options) {
+        this.dotNetObjOptions = options;
+        this.determineModalClassUse();
+        this.determineTriggerVisibility();
+    }
+    initModalEvents() {
+        var self = this;
+        self.elemRefs.content.addEventListener('click', () => {
+            self.open = false;
+        });
+
+        var trigger = document.querySelector(self.dotNetObjOptions.triggerMarker);
+        if (trigger) {
+            trigger.addEventListener('click', () => {
+                self.toggle();
+            });
+        }
+    }
+    toggle() {
+        this.open = !this.open;
+    }
+    determineModalClassUse() {
+        if (this.dotNetObjOptions.modalOnly || window.matchMedia('(max-width: ' + this.dotNetObjOptions.responsiveBreakpoint + 'px)').matches) {
+            this.elemRefs.drawer.classList.add('mdc-drawer--modal');
+        } else {
+            this.elemRefs.drawer.classList.remove('mdc-drawer--modal');
+        }
+    }
+    determineTriggerVisibility() {
+        var trigger = document.querySelector(this.dotNetObjOptions.triggerMarker);
+        if (trigger && this.dotNetObjOptions) {
+            if (this.dotNetObjOptions.modalOnly || window.matchMedia('(max-width: ' + this.dotNetObjOptions.responsiveBreakpoint + 'px)').matches) {
+                trigger.classList.remove('mobsites-blazor-display-none');
+            } else {
+                trigger.classList.add('mobsites-blazor-display-none');
+            }
+        }
     }
 }

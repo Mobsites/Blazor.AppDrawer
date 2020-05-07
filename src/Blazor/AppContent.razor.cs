@@ -4,10 +4,10 @@
 namespace Mobsites.Blazor
 {
     /// <summary>
-    /// Blazor component for housing app content when using the <see cref="AppDrawer"/> component.
+    /// Component for wrapping app content when using the <see cref="AppDrawer"/> component.
     /// </summary>
-    public partial class AppContent
+    public sealed partial class AppContent
     {
-        
+
     }
 }

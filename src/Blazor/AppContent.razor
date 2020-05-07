@@ -1,5 +1,7 @@
 @inherits WrapperComponent
 
 <div class="mdc-drawer-app-content @Class" style="@Style" @attributes="@ExtraAttributes">
-    @ChildContent
+    <CascadingValue Value="this">
+      @ChildContent
+    </CascadingValue>
 </div>

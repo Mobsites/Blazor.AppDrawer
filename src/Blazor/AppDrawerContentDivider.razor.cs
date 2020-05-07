@@ -6,24 +6,25 @@ using Microsoft.AspNetCore.Components;
 namespace Mobsites.Blazor
 {
     /// <summary>
-    /// Blazor child component for adding a content divider to the <see cref="AppDrawerContent"/> component.
+    /// Child component for adding a content divider to the <see cref="AppDrawerContent"/> component.
     /// </summary>
-    public partial class AppDrawerContentDivider
+    public sealed partial class AppDrawerContentDivider
     {
         private string style;
 
         /// <summary>
         /// Styles for directly affecting this component go here.
         /// </summary>
-        [Parameter] public override string Style
-        { 
-            get 
+        [Parameter]
+        public override string Style
+        {
+            get
             {
                 string color = string.IsNullOrWhiteSpace(this.Color) ? null : $"border-bottom-color: {this.Color};";
-                
+
                 return color + style;
             }
-            set => style = value; 
+            set => style = value;
         }
 
         /// <summary>

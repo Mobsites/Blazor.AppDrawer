@@ -1,6 +1,12 @@
-@inherits MainComponent
+@inherits StatefulComponent
 
-<aside class="mdc-drawer @Class" style="@Style" @attributes="@ExtraAttributes" >
+@{
+    string id = string.IsNullOrWhiteSpace(Id)
+        ? "blazor-app-drawer"
+        : Id;
+}
+
+<aside id="@id" @ref="ElemRef" class="mdc-drawer mdc-drawer--modal @Class" style="@Style" @attributes="@ExtraAttributes" >
     <CascadingValue Value="this">
       @ChildContent
     </CascadingValue>
