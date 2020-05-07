@@ -8,7 +8,7 @@ namespace Mobsites.Blazor
     /// <summary>
     /// Child component for adding a logo to the <see cref="AppDrawerHeader"/> component.
     /// </summary>
-    public partial class AppDrawerHeaderLogo
+    public sealed partial class AppDrawerHeaderLogo
     {
         private string src;
 

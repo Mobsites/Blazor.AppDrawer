@@ -8,7 +8,7 @@ namespace Mobsites.Blazor
     /// <summary>
     /// Child component for adding a title to the <see cref="AppDrawerHeader"/> component.
     /// </summary>
-    public partial class AppDrawerHeaderTitle
+    public sealed partial class AppDrawerHeaderTitle
     {
         /// <summary>
         /// Content to render.

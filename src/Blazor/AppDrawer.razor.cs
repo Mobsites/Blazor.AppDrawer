@@ -3,6 +3,7 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Mobsites.Blazor
@@ -10,7 +11,7 @@ namespace Mobsites.Blazor
     /// <summary>
     /// UI component for organizing access to destinations and other functionality in the app.
     /// </summary>
-    public partial class AppDrawer
+    public sealed partial class AppDrawer
     {
         /****************************************************
         *
@@ -23,8 +24,29 @@ namespace Mobsites.Blazor
         /// </summary>
         [Parameter] public RenderFragment ChildContent { get; set; }
 
+        private string triggerMarker;
+
         /// <summary>
-        /// Set this to true to have a modal dismissable drawer across all device sizes. 
+        /// A unique class marker on an element being used to toggle the <see cref="AppDrawer" />. 
+        /// Defaults to built-in trigger class or the TopAppBar nav trigger class. 
+        /// </summary>
+        [Parameter]
+        public string TriggerMarker
+        {
+            get => triggerMarker ?? ".mdc-drawer-trigger, .mdc-top-app-bar__navigation-icon";
+            set
+            {
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    triggerMarker = value.StartsWith(".")
+                        ? value
+                        : "." + value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Whether to have a modal dismissable drawer across all device sizes. 
         /// Defaults to a responsive mode (false). 
         /// </summary>
         [Parameter] public bool ModalOnly { get; set; }
@@ -34,7 +56,7 @@ namespace Mobsites.Blazor
         /// </summary>
         [Parameter] public EventCallback<bool> ModalOnlyChanged { get; set; }
 
-        private int? responsiveBreakpoint = 900;
+        private int? responsiveBreakpoint;
 
         /// <summary>
         /// The css media breakpoint (in pixels) at which the drawer goes from modal to fixed in responsive mode.
@@ -43,14 +65,10 @@ namespace Mobsites.Blazor
         [Parameter]
         public int? ResponsiveBreakpoint
         {
-            get => responsiveBreakpoint;
+            get => responsiveBreakpoint ?? 900;
             set
             {
-                if (value is null)
-                {
-                    responsiveBreakpoint = 900;
-                }
-                else if (value >= 0)
+                if (value != null && value >= 0)
                 {
                     responsiveBreakpoint = value;
                 }
@@ -58,9 +76,56 @@ namespace Mobsites.Blazor
         }
 
         /// <summary>
+        /// Whether this is being used above or below our TopAppBar component. 
+        /// Do not set otherwise. 
+        /// </summary>
+        [Parameter] public bool? AboveTopAppBar { get; set; }
+
+        /// <summary>
+        /// Call back event for notifying another component that this property changed. 
+        /// </summary>
+        [Parameter] public EventCallback<bool?> AboveTopAppBarChanged { get; set; }
+
+        /// <summary>
+        /// Close app drawer.
+        /// </summary>
+        public Task Toggle() => this.jsRuntime.InvokeVoidAsync(
+            "Mobsites.Blazor.AppDrawers.toggle",
+            Index)
+            .AsTask();
+
+        /// <summary>
+        /// Close app drawer.
+        /// </summary>
+        public Task Open() => this.jsRuntime.InvokeVoidAsync(
+            "Mobsites.Blazor.AppDrawers.open",
+            Index)
+            .AsTask();
+
+        /// <summary>
+        /// Close app drawer.
+        /// </summary>
+        public Task Close() => this.jsRuntime.InvokeVoidAsync(
+            "Mobsites.Blazor.AppDrawers.close",
+            Index)
+            .AsTask();
+
+        /// <summary>
         /// Call back event for notifying another component that this property changed. 
         /// </summary>
         [Parameter] public EventCallback<int?> ResponsiveBreakpointChanged { get; set; }
+
+        /// <summary>
+        /// Content to render.
+        /// </summary>
+        [JSInvokable]
+        public void SetIndex(int index)
+        {
+            if (Index < 0)
+            {
+                Index = index;
+            }
+        }
 
         /// <summary>
         /// Clear all state for this UI component and any of its dependents from browser storage.
@@ -75,21 +140,40 @@ namespace Mobsites.Blazor
         *
         ****************************************************/
 
+        /// <summary>
+        /// Whether component environment is Blazor WASM or Server.
+        /// </summary>
+        internal bool IsWASM => RuntimeInformation.IsOSPlatform(OSPlatform.Create("WEBASSEMBLY"));
+
         private DotNetObjectReference<AppDrawer> self;
-        protected DotNetObjectReference<AppDrawer> Self
+
+        /// <summary>
+        /// Net reference passed into javascript representation.
+        /// </summary>
+        internal DotNetObjectReference<AppDrawer> Self
         {
             get => self ?? (Self = DotNetObjectReference.Create(this));
             set => self = value;
         }
 
-        protected ElementReference ElemRef { get; set; }
+        /// <summary>
+        /// The index to this object's javascript representation in the object store.
+        /// </summary>
+        internal int Index { get; set; } = -1;
 
+        /// <summary>
+        /// Dom element reference passed into javascript representation.
+        /// </summary>
+        internal ElementReference ElemRef { get; set; }
 
         /// <summary>
         /// Child reference. (Assigned by child.)
         /// </summary>
-        internal AppDrawerContent Content { get; set; }        
+        internal AppDrawerContent Content { get; set; }
 
+        /// <summary>
+        /// Life cycle method for when component has been rendered in the dom and javascript interopt is fully ready.
+        /// </summary>
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -98,10 +182,13 @@ namespace Mobsites.Blazor
             }
             else
             {
-                await Refresh();
+                await Update();
             }
         }
 
+        /// <summary>
+        /// Initialize state and javascript representations.
+        /// </summary>
         private async Task Initialize()
         {
             var options = await this.GetState<AppDrawer, Options>();
@@ -115,13 +202,11 @@ namespace Mobsites.Blazor
                 await this.CheckState(options);
             }
 
-            // Destroy any lingering js representation.
-            options.Destroy = true;
-
             this.initialized = await this.jsRuntime.InvokeAsync<bool>(
-                "Mobsites.Blazor.AppDrawer.init",
+                "Mobsites.Blazor.AppDrawers.init",
                 Self,
-                new {
+                new
+                {
                     Drawer = this.ElemRef,
                     Content = this.Content?.ElemRef
                 },
@@ -132,10 +217,9 @@ namespace Mobsites.Blazor
 
 
         /// <summary>
-        /// Refreshes the drawer when in responsive mode.
+        /// Update state.
         /// </summary>
-        [JSInvokable]
-        public async Task Refresh(bool destroy = false)
+        private async Task Update()
         {
             var options = await this.GetState<AppDrawer, Options>();
 
@@ -145,26 +229,25 @@ namespace Mobsites.Blazor
                 options = this.GetOptions();
             }
 
-            options.Destroy = destroy;
-
-            this.initialized = await this.jsRuntime.InvokeAsync<bool>(
-                "Mobsites.Blazor.AppDrawer.refresh",
-                Self,
-                new {
-                    Drawer = this.ElemRef,
-                    Content = this.Content?.ElemRef
-                },
+            await this.jsRuntime.InvokeVoidAsync(
+                $"Mobsites.Blazor.AppDrawers.update",
+                Index,
                 options);
 
             await this.Save<AppDrawer, Options>(options);
         }
 
+        /// <summary>
+        /// Get current or storage-saved options for keeping state.
+        /// </summary>
         internal Options GetOptions()
         {
             var options = new Options
             {
                 ModalOnly = this.ModalOnly,
-                ResponsiveBreakpoint = this.ResponsiveBreakpoint
+                ResponsiveBreakpoint = this.ResponsiveBreakpoint,
+                AboveTopAppBar = this.AboveTopAppBar,
+                TriggerMarker = this.TriggerMarker
             };
 
             base.SetOptions(options);
@@ -172,6 +255,10 @@ namespace Mobsites.Blazor
             return options;
         }
 
+        /// <summary>
+        /// Check whether storage-retrieved options are different than current
+        /// and thereby need to notify parents of change when keeping state.
+        /// </summary>
         internal async Task CheckState(Options options)
         {
             bool stateChanged = false;
@@ -186,6 +273,11 @@ namespace Mobsites.Blazor
                 await this.ResponsiveBreakpointChanged.InvokeAsync(options.ResponsiveBreakpoint);
                 stateChanged = true;
             }
+            if (this.AboveTopAppBar != options.AboveTopAppBar)
+            {
+                await this.AboveTopAppBarChanged.InvokeAsync(options.AboveTopAppBar);
+                stateChanged = true;
+            }
 
             bool baseStateChanged = await base.CheckState(options);
 
@@ -193,8 +285,12 @@ namespace Mobsites.Blazor
                 StateHasChanged();
         }
 
+        /// <summary>
+        /// Called by GC.
+        /// </summary>
         public override void Dispose()
         {
+            jsRuntime.InvokeVoidAsync("Mobsites.Blazor.AppDrawers.destroy", Index);
             self?.Dispose();
             base.Dispose();
         }

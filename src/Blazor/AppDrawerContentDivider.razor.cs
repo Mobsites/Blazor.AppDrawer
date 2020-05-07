@@ -8,7 +8,7 @@ namespace Mobsites.Blazor
     /// <summary>
     /// Child component for adding a content divider to the <see cref="AppDrawerContent"/> component.
     /// </summary>
-    public partial class AppDrawerContentDivider
+    public sealed partial class AppDrawerContentDivider
     {
         private string style;
 

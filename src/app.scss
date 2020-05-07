@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 @use "@material/drawer/mdc-drawer";
-@use "@material/list/mdc-list";
 
 *, ::after, ::before {
     box-sizing: border-box;
@@ -21,18 +20,22 @@ app {
     width: 100%;
 }
 
-.mdc-drawer-app-content {
-    flex: auto;
-    overflow: auto;
-    position: relative;
+.mobsites-blazor-display-none {
+    display: none !important;
 }
 
-.blazor-main-content {
+.mobsites-blazor-main-content {
     overflow: auto;
     height: 100%;
     padding-left: 2rem !important;
     padding-right: 1.5rem !important;
     padding-top: 4.5rem;
+}
+
+.mdc-drawer-app-content {
+    flex: auto;
+    overflow: auto;
+    position: relative;
 }
 
 .mdc-drawer__header {
@@ -42,10 +45,6 @@ app {
 
 .mdc-drawer__image-container {
     text-align: center;
-}
-
-.hide-mobsites-blazor-app-drawer-button {
-    display: none !important;
 }
 
 .mdc-drawer__content {

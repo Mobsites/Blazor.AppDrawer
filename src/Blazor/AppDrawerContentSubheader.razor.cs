@@ -8,7 +8,7 @@ namespace Mobsites.Blazor
     /// <summary>
     /// Child component for adding a subheader to the <see cref="AppDrawerContent"/> component.
     /// </summary>
-    public partial class AppDrawerContentSubheader
+    public sealed partial class AppDrawerContentSubheader
     {
         /// <summary>
         /// Content to render.

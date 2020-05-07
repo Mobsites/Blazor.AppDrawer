@@ -9,7 +9,7 @@ namespace Mobsites.Blazor
     /// Subcomponent for adding header content to the <see cref="AppDrawer"/> component.
     /// Things like account switchers and titles should live here.
     /// </summary>
-    public partial class AppDrawerHeader
+    public sealed partial class AppDrawerHeader
     {
         /// <summary>
         /// Content to render.

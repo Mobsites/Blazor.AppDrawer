@@ -1,6 +1,6 @@
 @inherits LayoutComponentBase
 
-<AppDrawer 
+<AppDrawer
     KeepState
     @bind-ModalOnly="@ModalOnly"
     @bind-ResponsiveBreakpoint="@ResponsiveBreakpoint"
@@ -105,9 +105,11 @@
 </AppDrawer>
 <AppContent class="main">
     <div class="top-row px-4">
-        <button id="@AppDrawer.AppDrawerButtonMarker" class="navbar-toggler no-outline mr-auto">
-            <span class="oi oi-menu align-middle"></span>
-        </button>
+        <AppDrawerTrigger Class="mr-auto">
+            <button class="navbar-toggler no-outline">
+                <span class="oi oi-menu align-middle"></span>
+            </button>
+        </AppDrawerTrigger>
         <a href="https://github.com/Mobsites/Blazor.AppDrawer" target="_blank" class="ml-md-auto pr-2 pr-md-0">
             <img src="_content/Shared/dark-github.png" width="24" height="24" />
         </a>

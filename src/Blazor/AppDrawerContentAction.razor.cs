@@ -8,7 +8,7 @@ namespace Mobsites.Blazor
     /// <summary>
     /// Child component for adding an action to the <see cref="AppDrawerContent"/> component.
     /// </summary>
-    public partial class AppDrawerContentAction
+    public sealed partial class AppDrawerContentAction
     {
         /// <summary>
         /// Content to render.

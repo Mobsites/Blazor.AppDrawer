@@ -9,7 +9,7 @@ namespace Mobsites.Blazor
     /// Subcomponent for adding scrollable content to the <see cref="AppDrawer"/> component.
     /// Things like navigation destinations and other app functionality, such as a restart option, should live here.
     /// </summary>
-    public partial class AppDrawerContent
+    public sealed partial class AppDrawerContent
     {
         /****************************************************
         *
@@ -35,8 +35,14 @@ namespace Mobsites.Blazor
         *
         ****************************************************/
 
+        /// <summary>
+        /// Dom element reference passed into javascript representation.
+        /// </summary>
         internal ElementReference ElemRef { get; set; }
 
+        /// <summary>
+        /// Life cycle method for when parameters from parent are set.
+        /// </summary>
         protected override void OnParametersSet()
         {
             // This will check for valid parent.

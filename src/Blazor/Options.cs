@@ -26,9 +26,25 @@ namespace Mobsites.Blazor
             *
             ***********************************************************************/
 
+            /// <summary>
+            /// Option for whether to have a modal dismissable drawer across all device sizes. 
+            /// </summary>
             public bool ModalOnly { get; set; }
+
+            /// <summary>
+            /// Option for the css media breakpoint (in pixels) at which the drawer goes from modal to fixed in responsive mode.
+            /// </summary>
             public int? ResponsiveBreakpoint { get; set; }
-            public bool Destroy { get; set; }
+
+            /// <summary>
+            /// Option for whether this is being used above or below our TopAppBar component.
+            /// </summary>
+            public bool? AboveTopAppBar { get; set; }
+
+            /// <summary>
+            /// Option for a unique class marker on an element being used to toggle the <see cref="AppDrawer" />. 
+            /// </summary>
+            public string TriggerMarker { get; set; }
         }
     }
 }
