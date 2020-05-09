@@ -35,10 +35,4 @@ After much thought, the full implementation of Google's MDC Navigation Drawer wa
 
 ## Getting Started
 
-1. Add [Nuget](https://www.nuget.org/packages/Mobsites.Blazor.AppDrawer/) package:
-
-```shell
-dotnet add package Mobsites.Blazor.AppDrawer
-```
-
-Next check out our new [docs](https://www.mobsites.com/blazor/app-drawer) to help you get started.
+Check out our new [docs](https://www.mobsites.com/blazor/app-drawer) to help you get started.
