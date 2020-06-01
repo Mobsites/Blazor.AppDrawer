@@ -1,8 +1,8 @@
-![Nuget](https://img.shields.io/nuget/v/Mobsites.Blazor.AppDrawer) ![Nuget](https://img.shields.io/nuget/dt/Mobsites.Blazor.AppDrawer) [![Build Status](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_apis/build/status/Build?branchName=master)](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_build/latest?definitionId=26&branchName=master)
-
 # Blazor App Drawer
 
 by <a href="https://www.mobsites.com"><img align="center" src="./src/assets/mobsites-logo.png" width="36" height="36" style="padding-top: 20px;" />obsites</a>
+
+![Nuget](https://img.shields.io/nuget/v/Mobsites.Blazor.AppDrawer) ![Nuget](https://img.shields.io/nuget/dt/Mobsites.Blazor.AppDrawer) [![Build Status](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_apis/build/status/Build?branchName=master)](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_build/latest?definitionId=26&branchName=master)
 
 A Blazor UI component that utilizes the [MDC Drawer](https://material.io/develop/web/components/drawers/) library to organize access to destinations and other functionality in a Blazor app.
 
