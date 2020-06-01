@@ -1,4 +1,4 @@
-![Nuget](https://img.shields.io/nuget/v/Mobsites.Blazor.AppDrawer) [![Build Status](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_apis/build/status/Build?branchName=master)](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_build/latest?definitionId=26&branchName=master)
+![Nuget](https://img.shields.io/nuget/v/Mobsites.Blazor.AppDrawer) ![Nuget](https://img.shields.io/nuget/dt/Mobsites.Blazor.AppDrawer) [![Build Status](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_apis/build/status/Build?branchName=master)](https://dev.azure.com/Mobsites-US/Blazor%20App%20Drawer/_build/latest?definitionId=26&branchName=master)
 
 # Blazor App Drawer
 
@@ -23,7 +23,7 @@ Check out its source code [here](./samples).
 
 ###### .NETStandard 2.0
 
-* Mobsites.Blazor.BaseComponents (>= 1.0.2)
+* Mobsites.Blazor.BaseComponents (>= 1.0.3)
 
 ## Design and Development
 
