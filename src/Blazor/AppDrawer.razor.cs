@@ -76,6 +76,11 @@ namespace Mobsites.Blazor
         }
 
         /// <summary>
+        /// Call back event for notifying another component that this property changed. 
+        /// </summary>
+        [Parameter] public EventCallback<int?> ResponsiveBreakpointChanged { get; set; }
+
+        /// <summary>
         /// Whether this is being used above or below our TopAppBar component. 
         /// Do not set otherwise. 
         /// </summary>
@@ -109,11 +114,6 @@ namespace Mobsites.Blazor
             "Mobsites.Blazor.AppDrawers.close",
             Index)
             .AsTask();
-
-        /// <summary>
-        /// Call back event for notifying another component that this property changed. 
-        /// </summary>
-        [Parameter] public EventCallback<int?> ResponsiveBreakpointChanged { get; set; }
 
         /// <summary>
         /// Content to render.

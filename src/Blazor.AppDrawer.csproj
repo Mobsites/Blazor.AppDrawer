@@ -16,17 +16,17 @@
     <IsPackable>true</IsPackable>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>mobsites-logo.png</PackageIcon>
-    <PackageReleaseNotes>Removed rem from certain styles to address ios display issues.</PackageReleaseNotes>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageReleaseNotes>Updated dependencies.</PackageReleaseNotes>
+    <PackageVersion>1.0.2</PackageVersion>
     <PackageTags>blazor;Google;material;design;drawer;component</PackageTags>
-    <PackageProjectUrl>https://www.mobsites.com</PackageProjectUrl>
+    <PackageProjectUrl>https://www.mobsites.com/blazor/app-drawer</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Mobsites/Blazor.AppDrawer</RepositoryUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mobsites.Blazor.BaseComponents" Version="1.0.2" />
+    <PackageReference Include="Mobsites.Blazor.BaseComponents" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
